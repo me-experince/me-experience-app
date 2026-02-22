@@ -4,33 +4,29 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
+app.use(express.static('public')); // Cartella per i file statici
 
-// QUESTA È LA RIGA MANCANTE: Dice al server di mostrare index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// Database simulato (Poi lo collegheremo a Railway/PostgreSQL)
+const db = {
+    bookings: [],
+    partners: [
+        { id: 'BB_DUOMO', name: 'B&B Duomo', commissions: 0 },
+        { id: 'SEA_MASTER', name: 'Capitan Ciccio', role: 'provider' }
+    ]
+};
+
+// ROTTE DASHBOARD
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public/admin.html')));
+app.get('/partner/:id', (req, res) => res.sendFile(path.join(__dirname, 'public/partner.html')));
+app.get('/provider/:id', (req, res) => res.sendFile(path.join(__dirname, 'public/provider.html')));
+
+// API PER DATI DASHBOARD
+app.get('/api/stats', (req, res) => {
+    res.json({
+        totalRevenue: db.bookings.reduce((sum, b) => sum + b.amount, 0),
+        bookingCount: db.bookings.length,
+        recentBookings: db.bookings.slice(-5)
+    });
 });
 
-app.post('/create-checkout-session', async (req, res) => {
-    try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [{
-                price_data: {
-                    currency: 'eur',
-                    product_data: { name: 'Notte del Mito - ME-Xperience' },
-                    unit_amount: 12000,
-                },
-                quantity: 1,
-            }],
-            mode: 'payment',
-            success_url: 'https://me-xperience.com/success',
-            cancel_url: 'https://me-xperience.com/cancel',
-        });
-        res.json({ id: session.id });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(process.env.PORT || 3000);
