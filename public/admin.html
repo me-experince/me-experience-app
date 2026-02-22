@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ME-X Admin | Global Control</title>
+</head>
+<body class="bg-slate-900 text-white p-8">
+    <h1 class="text-3xl font-black mb-8 border-l-4 border-yellow-500 pl-4">ME-XPERIENCE MASTER ADMIN</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-slate-800 p-6 rounded-2xl border border-white/10">
+            <p class="text-slate-400 uppercase text-xs">Fatturato Totale</p>
+            <h2 class="text-4xl font-bold text-green-400">€ <span id="revenue">0</span></h2>
+        </div>
+        <div class="bg-slate-800 p-6 rounded-2xl border border-white/10">
+            <p class="text-slate-400 uppercase text-xs">Prenotazioni Attive</p>
+            <h2 class="text-4xl font-bold text-yellow-500" id="count">0</h2>
+        </div>
+    </div>
+
+    <div class="bg-slate-800 rounded-3xl p-6 border border-white/10">
+        <h3 class="text-xl font-bold mb-4">Monitor Partner (B&B)</h3>
+        <table class="w-full text-left text-sm text-slate-300">
+            <tr class="border-b border-white/5 uppercase text-xs text-slate-500">
+                <th class="py-3">Partner</th>
+                <th>Status</th>
+                <th>Commissioni Generate</th>
+            </tr>
+            <tr>
+                <td class="py-4">B&B Duomo Messina</td>
+                <td><span class="bg-green-500/20 text-green-500 px-2 py-1 rounded text-xs">ATTIVO</span></td>
+                <td>€ 420.00</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
