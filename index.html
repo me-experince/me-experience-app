@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-Xperience | Live the Myth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .gold-gradient { background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c); }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans">
+    <header class="p-8 text-center border-b border-white/10">
+        <h1 class="text-4xl font-black tracking-tighter italic">ME-XPERIENCE</h1>
+        <p class="text-yellow-500 font-light tracking-widest uppercase text-xs mt-2">Unlocking the Strait's Secrets</p>
+    </header>
+
+    <main class="max-w-md mx-auto p-6">
+        <div id="experience-card" class="glass rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800" alt="Strait of Messina" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-2xl font-bold uppercase">Notte del Mito</h2>
+                    <span class="text-yellow-500 font-bold text-xl">€120</span>
+                </div>
+                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Attraversa lo Stretto su una Felucca storica. Luci subacquee sui vortici e aperitivo gourmet incluso.</p>
+                
+                <button onclick="pay()" class="w-full py-4 gold-gradient text-slate-900 font-black rounded-xl uppercase tracking-tighter hover:scale-105 transition-transform">
+                    Book the Legend
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const stripe = Stripe('TUA_CHIAVE_PUBBLICA_STRIPE'); // La cambieremo dopo
+        function pay() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const partnerId = urlParams.get('ref') || 'DIRECT';
+            console.log("Prenotazione per partner:", partnerId);
+            // Qui si collegherà il backend per il pagamento
+            alert("Redirecting to secure payment for partner: " + partnerId);
+        }
+    </script>
+</body>
+</html>
