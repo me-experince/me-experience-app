@@ -30,3 +30,14 @@ app.get('/api/stats', (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000);
+// Database simulato potenziato
+const db = {
+    bookings: [
+        { id: 1, partner_id: 'BB_DUOMO', amount: 120, date: '2026-02-20', status: 'completed' },
+        { id: 2, partner_id: 'GANZIRRI_SUNSET', amount: 85, date: '2026-02-21', status: 'completed' }
+    ],
+    partners: [
+        { id: 'BB_DUOMO', name: 'B&B Duomo Elegance', commission_rate: 0.15, qr_scans: 150 },
+        { id: 'GANZIRRI_SUNSET', name: 'Ganzirri Sunset House', commission_rate: 0.12, qr_scans: 85 }
+    ]
+};
