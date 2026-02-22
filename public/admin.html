@@ -1,37 +1,92 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>ME-X Admin | Global Control</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <title>ME-X Command Center</title>
 </head>
-<body class="bg-slate-900 text-white p-8">
-    <h1 class="text-3xl font-black mb-8 border-l-4 border-yellow-500 pl-4">ME-XPERIENCE MASTER ADMIN</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-slate-800 p-6 rounded-2xl border border-white/10">
-            <p class="text-slate-400 uppercase text-xs">Fatturato Totale</p>
-            <h2 class="text-4xl font-bold text-green-400">€ <span id="revenue">0</span></h2>
-        </div>
-        <div class="bg-slate-800 p-6 rounded-2xl border border-white/10">
-            <p class="text-slate-400 uppercase text-xs">Prenotazioni Attive</p>
-            <h2 class="text-4xl font-bold text-yellow-500" id="count">0</h2>
-        </div>
-    </div>
+<body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
 
-    <div class="bg-slate-800 rounded-3xl p-6 border border-white/10">
-        <h3 class="text-xl font-bold mb-4">Monitor Partner (B&B)</h3>
-        <table class="w-full text-left text-sm text-slate-300">
-            <tr class="border-b border-white/5 uppercase text-xs text-slate-500">
-                <th class="py-3">Partner</th>
-                <th>Status</th>
-                <th>Commissioni Generate</th>
-            </tr>
-            <tr>
-                <td class="py-4">B&B Duomo Messina</td>
-                <td><span class="bg-green-500/20 text-green-500 px-2 py-1 rounded text-xs">ATTIVO</span></td>
-                <td>€ 420.00</td>
-            </tr>
-        </table>
-    </div>
+    <script type="text/babel">
+        const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } = Recharts;
+
+        const data = [
+            { name: 'Lun', sales: 400 },
+            { name: 'Mar', sales: 700 },
+            { name: 'Mer', sales: 500 },
+            { name: 'Gio', sales: 900 },
+            { name: 'Ven', sales: 1200 },
+            { name: 'Sab', sales: 1800 },
+            { name: 'Dom', sales: 1500 },
+        ];
+
+        // Qui incolliamo i componenti Helper che hai postato
+        const KPICard = ({ title, value, change, color = "text-white" }) => (
+            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <p class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">{title}</p>
+                <p class={`text-3xl font-black ${color}`}>{value}</p>
+                {change && <p class="text-green-500 text-xs mt-2 font-bold">{change} vs ieri</p>}
+            </div>
+        );
+
+        const MasterAdmin = () => {
+            return (
+                <div class="p-8">
+                    <header class="flex justify-between items-center mb-10">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-white italic">ME-XPERIENCE <span class="text-yellow-500 font-black">COMMAND</span></h1>
+                            <p class="text-slate-500 uppercase text-xs tracking-tighter">Messina & Provincia Operations Center</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="bg-red-600/20 text-red-500 border border-red-600/50 px-4 py-2 rounded-lg font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all">Emergency Stop</button>
+                            <button class="bg-yellow-600 px-6 py-2 rounded-lg font-bold text-slate-950 text-sm">Export Data</button>
+                        </div>
+                    </header>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                        <KPICard title="Revenue Totale" value="€ 42.500" change="+12.5%" />
+                        <KPICard title="Esperienze" value="184" change="+5.2%" />
+                        <KPICard title="Payout B&B" value="€ 6.375" color="text-yellow-500" />
+                        <KPICard title="Conversione QR" value="4.8%" change="+0.4%" />
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-slate-900/50 p-6 rounded-3xl border border-slate-800 h-[400px]">
+                            <h3 class="font-bold mb-6 uppercase text-sm text-slate-400 italic">Volume Prenotazioni</h3>
+                            <ResponsiveContainer width="100%" height="90%">
+                                <LineChart data={data}>
+                                    <XAxis dataKey="name" stroke="#475569" />
+                                    <Tooltip contentStyle={{backgroundColor: '#0f172a', border: 'none', borderRadius: '15px'}} />
+                                    <Line type="monotone" dataKey="sales" stroke="#eab308" strokeWidth={4} dot={{fill: '#eab308'}} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+
+                        <div class="bg-slate-900/50 p-6 rounded-3xl border border-slate-800">
+                            <h3 class="font-bold mb-6 uppercase text-sm text-slate-400">Top B&B Partners</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between border-b border-white/5 pb-2">
+                                    <span class="text-sm">B&B Duomo</span>
+                                    <span class="text-yellow-500 font-bold italic">€ 8.400</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-2 text-slate-500">
+                                    <span class="text-sm">Ganzirri House</span>
+                                    <span class="font-bold">€ 5.200</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MasterAdmin />);
+    </script>
 </body>
 </html>
