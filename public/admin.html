@@ -178,6 +178,27 @@
                 l.classList.add('text-gray-400');
             });
 
+            // Funzione per caricare i dati reali dal server
+async function updateRealStats() {
+    try {
+        const response = await fetch('/api/stats'); // Questa chiamata parla con il server.js
+        const data = await response.json();
+        
+        // Aggiorna i testi nella Dashboard
+        document.getElementById('fin-gross').innerText = `€ ${data.totalRevenue}`;
+        document.getElementById('stat-bookings').innerText = data.bookingCount;
+        
+        // Calcola Margine ME-X (ipotizzando il 15%)
+        const margin = (data.totalRevenue * 0.15).toFixed(2);
+        document.getElementById('fin-mex').innerText = `€ ${margin}`;
+        
+    } catch (error) {
+        console.log("Dati reali non ancora disponibili, visualizzazione demo.");
+    }
+}
+
+// Avvia l'aggiornamento all'apertura
+window.onload = updateRealStats;
             const activeLink = document.getElementById('nav-' + id);
             if (activeLink) {
                 activeLink.classList.add('active', 'text-black');
