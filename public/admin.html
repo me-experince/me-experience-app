@@ -17,6 +17,7 @@
         input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; width: 100%; }
         input:focus { border-color: #1a1a1a; }
         .hidden { display: none; }
+        .iban-font { font-family: 'Courier New', Courier, monospace; letter-spacing: 1px; }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -30,6 +31,7 @@
             <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link text-left pl-4 active uppercase">Overview</button>
             <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Partners</button>
             <button onclick="showSection('services')" id="nav-services" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Servizi</button>
+            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase text-amber-700">Payouts & IBAN</button>
         </nav>
     </aside>
 
@@ -60,7 +62,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="executive-card p-10">
                     <h3 class="stat-label mb-8 italic">Ranking Performance Strutture</h3>
-                    <div id="ranking-list" class="space-y-6"></div>
+                    <div id="ranking-list" class="space-y-6 text-sm"></div>
                 </div>
                 <div class="executive-card p-10">
                     <h3 class="stat-label mb-8 italic">Quick Stats</h3>
@@ -80,10 +82,37 @@
             <div class="executive-card">
                 <table class="w-full text-left text-[10px] tracking-widest uppercase">
                     <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 italic font-bold">
-                        <tr><th class="p-6">Struttura</th><th>Tipo</th><th>Comm.</th><th>Vendite</th><th>Calendario</th><th class="p-6 text-right">Link</th></tr>
+                        <tr>
+                            <th class="p-6">Struttura</th>
+                            <th>Tipo</th>
+                            <th>Comm.</th>
+                            <th>IBAN Associato</th>
+                            <th>Calendario</th>
+                            <th class="p-6 text-right">Link</th>
+                        </tr>
                     </thead>
-                    <tbody id="partners-table-body" class="text-gray-600"></tbody>
+                    <tbody id="partners-table-body" class="text-gray-600">
+                        </tbody>
                 </table>
+            </div>
+        </section>
+
+        <section id="finance" class="content-section hidden">
+            <h2 class="text-4xl serif italic mb-10">Gestione Payouts & IBAN</h2>
+            <div class="executive-card p-10">
+                <p class="stat-label mb-6 italic">Liquidazioni Pendenti</p>
+                <div id="payouts-list" class="space-y-4 text-sm">
+                    <div class="flex justify-between items-center border-b border-gray-100 py-4">
+                        <div>
+                            <p class="font-bold">B&B DUOMO MESSINA</p>
+                            <p class="text-[9px] text-gray-400 iban-font italic">IBAN: IT 45 X 01234 56789 000012345678</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-amber-600 font-bold">€ 420.00</p>
+                            <button class="text-[8px] uppercase tracking-widest border border-black px-3 py-1 mt-1 hover:bg-black hover:text-white transition">Invia Bonifico</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -96,53 +125,25 @@
         </section>
     </main>
 
-    <div id="calendar-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-4xl w-full p-12 shadow-2xl relative">
-            <button onclick="toggleModal('calendar-modal')" class="absolute top-6 right-6 font-bold">✕</button>
-            <h3 class="text-3xl serif italic mb-8" id="cal-title">Gestione Slot</h3>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div id="bookings-list" class="space-y-4"></div>
-                <div class="bg-gray-50 p-8">
-                    <h4 class="stat-label mb-6">Inserimento Manuale</h4>
-                    <div class="space-y-4">
-                        <input type="date" id="man-date">
-                        <input type="text" id="man-guest" placeholder="NOME OSPITE">
-                        <button onclick="addManual()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Conferma Prenotazione</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="partner-modal" class="hidden fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6">
+    <div id="partner-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
         <div class="bg-white max-w-md w-full p-10 shadow-2xl">
             <h3 class="serif italic text-2xl mb-8">Nuovo Partner</h3>
             <div class="space-y-6">
-                <input type="text" id="p-name" placeholder="NOME">
-                <select id="p-type"><option value="hotel">Hotel</option><option value="bnb">B&B</option><option value="villa">Villa/Resort</option></select>
+                <input type="text" id="p-name" placeholder="NOME STRUTTURA">
+                <select id="p-type">
+                    <option value="hotel">Hotel</option>
+                    <option value="bnb">B&B</option>
+                    <option value="villa">Villa/Resort</option>
+                </select>
                 <input type="number" id="p-comm" placeholder="COMMISSIONE %">
-                <button onclick="submitPartner()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Salva Partner</button>
+                <input type="text" id="p-iban" placeholder="IBAN PER PAGAMENTI" class="iban-font uppercase">
+                <button onclick="submitPartner()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase tracking-widest">Salva Partner & Registra IBAN</button>
                 <button onclick="toggleModal('partner-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400 mt-2">Chiudi</button>
             </div>
         </div>
     </div>
 
-    <div id="service-modal" class="hidden fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-md w-full p-10 shadow-2xl">
-            <h3 class="serif italic text-2xl mb-8">Nuovo Servizio</h3>
-            <div class="space-y-6">
-                <input type="text" id="s-name" placeholder="NOME">
-                <select id="s-type"><option value="exp">Esperienza</option><option value="serv">Servizio</option></select>
-                <input type="number" id="s-price" placeholder="PREZZO €">
-                <button onclick="submitService()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Crea</button>
-                <button onclick="toggleModal('service-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400 mt-2">Chiudi</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        let activePartnerId = null;
-
-        async function loadAdminData() {
-            try {
-                const res = await fetch('/api/
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-link').forEach
