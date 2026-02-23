@@ -3,129 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X | Sicily Executive Concierge & Luxury Experiences</title>
+    <title>ME-X | Sicily Luxury Concierge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.stripe.com/v3/"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fff; color: #1a1a1a; scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background: #fff; color: #1a1a1a; scroll-behavior: smooth; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
-        .luxury-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid #f8f8f8; }
-        .luxury-card:hover { transform: translateY(-10px); border-color: #1a1a1a; shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .cart-indicator { position: fixed; bottom: 30px; right: 30px; background: #000; color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 100; font-[10px] font-bold tracking-widest uppercase shadow-2xl; cursor: pointer; display: none; }
-        .nav-link { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; transition: 0.3s; }
+        .luxury-card:hover { transform: translateY(-10px); border-color: #000; transition: 0.5s; }
+        .cart-float { position: fixed; bottom: 30px; right: 30px; background: #000; color: #fff; padding: 20px 40px; border-radius: 50px; cursor: pointer; display: none; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center px-10 py-8 fixed w-full z-[100] transition-all" id="main-nav">
-        <div class="nav-link">Messina / Taormina</div>
-        <div class="text-2xl serif italic tracking-widest uppercase">ME-X</div>
-        <div class="flex gap-8">
-            <a href="#experiences" class="nav-link">Experiences</a>
-            <a href="#concierge" class="nav-link">Concierge</a>
-            <a href="/login" class="nav-link text-gray-400">Access</a>
+    <nav class="flex justify-between items-center px-10 py-8 fixed w-full z-50 bg-white/80 backdrop-blur-md">
+        <div class="text-[10px] tracking-widest font-bold uppercase">Messina / Sicily</div>
+        <div class="text-3xl serif italic tracking-[0.2em]">ME-X</div>
+        <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest">
+            <a href="#exp">Experiences</a>
+            <a href="#ser">Services</a>
+            <a href="/login" class="text-gray-400">Login</a>
         </div>
     </nav>
 
-    <header class="relative h-screen flex items-center justify-center overflow-hidden bg-black">
-        <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330" class="hero-video" alt="Sicily Luxury">
-        <div class="relative z-10 text-center text-white px-6">
-            <p class="text-[10px] tracking-[0.5em] uppercase mb-6 animate-pulse text-amber-500 font-bold">The New Standard of Sicily Stay</p>
-            <h1 class="text-6xl md:text-8xl serif italic mb-8 font-light">Oltre ogni limite.</h1>
-            <p class="max-w-xl mx-auto text-xs font-extralight tracking-widest leading-relaxed opacity-80 uppercase mb-12">
-                Dalle leggende dello Stretto ai transfer privati in elicottero. ME-X è la chiave d'accesso all'esclusività siciliana.
-            </p>
-            <div class="flex justify-center gap-6">
-                <button onclick="scrollToId('experiences')" class="px-10 py-4 border border-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Esplora Esperienze</button>
-                <button onclick="scrollToId('concierge')" class="px-10 py-4 bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 hover:text-white transition">Servizi Concierge</button>
-            </div>
+    <header class="h-screen flex items-center justify-center relative bg-black">
+        <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330" class="absolute inset-0 w-full h-full object-cover opacity-60">
+        <div class="relative z-10 text-center text-white p-6">
+            <h1 class="text-7xl md:text-9xl serif italic font-light mb-6">Unveiling Sicily</h1>
+            <p class="max-w-xl mx-auto text-xs uppercase tracking-[0.4em] opacity-80 leading-loose">Esperienze private e concierge d'eccellenza nello Stretto di Messina.</p>
         </div>
     </header>
 
-    <section id="experiences" class="py-32 px-10">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-20 text-center">
-                <span class="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em]">Collection 01</span>
-                <h2 class="text-5xl serif italic mt-2">Le Grandi Esperienze</h2>
+    <section id="exp" class="py-32 px-10 max-w-7xl mx-auto">
+        <h2 class="text-5xl serif italic mb-20 text-center">Elite Experiences</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div class="luxury-card border p-10 rounded-[3rem]" onclick="addToCart('La Notte del Mito', 120, '2026-02-25', '20:30')">
+                <img src="https://images.unsplash.com/photo-1516939884455-1445c8652f83" class="w-full h-64 object-cover rounded-2xl mb-8">
+                <span class="text-[10px] text-amber-600 font-bold uppercase tracking-widest italic">Culture & Sea</span>
+                <h3 class="text-3xl serif italic mt-2 mb-4">La Notte del Mito</h3>
+                <p class="text-xs text-gray-500 leading-relaxed mb-10">Tour privato su Feluca storica tra Scilla e Cariddi.</p>
+                <button class="w-full py-4 bg-black text-white text-[10px] font-bold uppercase tracking-widest">Aggiungi al Carrello - € 120</button>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10" id="experience-grid">
-                <div class="luxury-card p-10 group" onclick="addToCart('Notte del Mito', 120)">
-                    <div class="h-80 overflow-hidden mb-8">
-                        <img src="https://images.unsplash.com/photo-1516939884455-1445c8652f83" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    </div>
-                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-2 font-bold italic">Cultura & Tradizione</p>
-                    <h3 class="serif text-2xl italic mb-4">La Notte del Mito</h3>
-                    <p class="text-[10px] text-gray-500 leading-relaxed mb-6 italic uppercase tracking-tighter">Navigazione su Feluca storica con degustazione gourmet.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg serif italic">€ 120 / p.</span>
-                        <span class="text-[9px] font-bold uppercase underline">Aggiungi</span>
-                    </div>
-                </div>
-                </div>
-        </div>
+            </div>
     </section>
 
-    <section id="concierge" class="py-32 px-10 bg-gray-50">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center italic">
-                <div>
-                    <span class="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em]">Collection 02</span>
-                    <h2 class="text-5xl serif mb-8">Servizi Executive</h2>
-                    <p class="text-sm text-gray-500 leading-relaxed font-light mb-12 italic uppercase">
-                        Gestiamo ogni dettaglio della tua logistica. Dai transfer privati in Black Van ai servizi di Personal Concierge h24. La tua unica preoccupazione sarà goderti il viaggio.
-                    </p>
-                    <div class="space-y-4" id="services-list">
-                        <div class="flex justify-between border-b border-gray-200 py-4 items-center cursor-pointer hover:pl-4 transition-all">
-                            <span class="text-[10px] font-bold tracking-widest uppercase italic">Transfer Aeroporto Black Label</span>
-                            <span class="text-[10px] font-bold uppercase">Da € 85</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[600px] bg-black rounded-3xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf" class="w-full h-full object-cover opacity-80" alt="Luxury Car">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="cart-btn" class="cart-indicator" onclick="checkout()">
-        Cart (<span id="cart-count">0</span>) / Checkout Luxury
+    <div id="cart-float" class="cart-float" onclick="checkout()">
+        CART (<span id="count">0</span>) • CHECKOUT
     </div>
 
     <script>
         let cart = [];
+        const stripe = Stripe('TUA_CHIAVE_PUBBLICA');
 
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-btn').style.display = 'block';
-            console.log("Aggiunto:", name);
-        }
-
-        function scrollToId(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        function addToCart(name, price, date, time) {
+            cart.push({ name, price, date, time });
+            document.getElementById('count').innerText = cart.length;
+            document.getElementById('cart-float').style.display = 'block';
+            alert(name + " aggiunto al tuo viaggio.");
         }
 
         async function checkout() {
-            const email = prompt("Inserisci la tua email per confermare la prenotazione:");
+            const email = prompt("Inserisci l'email per ricevere i voucher PDF:");
             if(!email) return;
-            // Fetch verso il server per Stripe...
-            alert("Ti stiamo indirizzando al gateway di pagamento sicuro ME-X...");
+            const res = await fetch('/api/create-luxury-checkout', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ cart, customerEmail: email })
+            });
+            const session = await res.json();
+            await stripe.redirectToCheckout({ sessionId: session.id });
         }
-
-        window.onscroll = function() {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 100) {
-                nav.style.backgroundColor = "rgba(255,255,255,0.95)";
-                nav.style.padding = "20px 40px";
-            } else {
-                nav.style.backgroundColor = "transparent";
-                nav.style.padding = "32px 40px";
-            }
-        };
     </script>
 </body>
 </html>
