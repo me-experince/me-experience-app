@@ -4,101 +4,54 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-
-// Serve i file statici dalla cartella 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- ROTTE DELLE DASHBOARD ---
+// --- DATABASE IN MEMORIA (Persistente fino al riavvio) ---
+let data = {
+    partners: [
+        { id: 'BB_DUOMO', name: 'B&B Duomo Messina', type: 'bnb', commission: 15, sales: 2450 },
+        { id: 'VILLA_SA', name: "Villa Sant'Andrea", type: 'hotel', commission: 20, sales: 3100 }
+    ],
+    services: [
+        { id: 'MITO_NOTTE', name: 'Notte del Mito', type: 'exp', price: 120, status: 'attivo' },
+        { id: 'TRANS_CTA', name: 'Transfer Catania CTA', type: 'serv', price: 150, status: 'attivo' }
+    ],
+    bookings: []
+};
 
-// Super Admin: Controllo totale
-app.get('/master-admin-dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/admin.html'));
-});
+// --- ROTTE API PER DASHBOARD ADMIN ---
 
-// Partner: Dashboard per i B&B (es: /partner?id=BB_DUOMO)
-app.get('/partner-panel', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/partner.html'));
-});
-
-// Provider: Dashboard per i Fornitori (es: /provider?id=BOAT_01)
-app.get('/provider-panel', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/provider.html'));
-});
-
-// --- SISTEMA DI PAGAMENTO STRIPE ---
-
-app.post('/create-checkout-session', async (req, res) => {
-    try {
-        const { partnerId } = req.body;
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [{
-                price_data: {
-                    currency: 'eur',
-                    product_data: { 
-                        name: 'Notte del Mito - ME-Xperience',
-                        description: 'Tour esclusivo nello Stretto di Messina'
-                    },
-                    unit_amount: 12000, // €120.00
-                },
-                quantity: 1,
-            }],
-            metadata: { partner_ref: partnerId || 'DIRECT' },
-            mode: 'payment',
-            success_url: 'https://me-xperience.com/success',
-            cancel_url: 'https://me-xperience.com/cancel',
-        });
-        res.json({ id: session.id });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// Avvio Server
-const PORT = process.env.PORT || 3000;
-// API per estrarre il fatturato REALE da Stripe
-app.get('/api/realtime-stats', async (req, res) => {
-    try {
-        // Recuperiamo i pagamenti riusciti (limitati agli ultimi 100 per velocità)
-        const payments = await stripe.paymentIntents.list({ limit: 100 });
-        
-        const totalRevenue = payments.data
-            .filter(p => p.status === 'succeeded')
-            .reduce((sum, p) => sum + (p.amount / 100), 0); // Convertiamo da centesimi a Euro
-
-        const bookingCount = payments.data.filter(p => p.status === 'succeeded').length;
-
-        res.json({
-            revenue: totalRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 }),
-            count: bookingCount
-        });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-app.listen(PORT, () => console.log(`ME-Xperience Engine running on port ${PORT}`));
-// Database simulato degli Slot (ID Esperienza + Data + Posti Occupati)
-const availability = [
-    { experienceId: 'mitonotte', date: '2026-03-24', slots: [{ time: '20:30', max: 12, booked: 12 }] },
-    { experienceId: 'mitonotte', date: '2026-03-25', slots: [{ time: '20:30', max: 12, booked: 8 }] }
-];
-
-// API per recuperare disponibilità nel calendario
-app.get('/api/availability/:experienceId', (req, res) => {
-    const { experienceId } = req.params;
-    const data = availability.filter(a => a.experienceId === experienceId);
+// Ottieni tutti i dati
+app.get('/api/admin/data', (req, res) => {
     res.json(data);
 });
-app.get('/services', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/services.html'));
+
+// Aggiungi un nuovo Partner
+app.post('/api/partners/add', (req, res) => {
+    const newPartner = {
+        id: 'P' + Date.now(),
+        ...req.body,
+        sales: 0
+    };
+    data.partners.push(newPartner);
+    res.json({ success: true, partner: newPartner });
 });
-// Questa riga dice al server di mostrare la pagina dei servizi
-app.get('/services', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/services.html'));
+
+// Aggiungi un nuovo Servizio
+app.post('/api/services/add', (req, res) => {
+    const newService = {
+        id: 'S' + Date.now(),
+        ...req.body,
+        status: 'attivo'
+    };
+    data.services.push(newService);
+    res.json({ success: true, service: newService });
 });
-app.get('/partner-dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/partner.html'));
-});
-app.get('/provider-dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/provider.html'));
-});
+
+// --- ROTTE PAGINE ---
+app.get('/master-admin-dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/admin.html')));
+app.get('/partner-dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/partner.html')));
+app.get('/provider-dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/provider.html')));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`ME-X Engine 2.0 Operational on port ${PORT}`));
