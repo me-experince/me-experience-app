@@ -8,28 +8,24 @@
     <script src="https://js.stripe.com/v3/"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; scroll-behavior: smooth; }
         h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; }
         .hero-gradient { background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); }
-        .btn-luxury { border: 1px solid #1a1a1a; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.7rem; font-weight: 600; }
+        .btn-luxury { border: 1px solid #1a1a1a; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.7rem; font-weight: 600; background: transparent; }
         .btn-luxury:hover { background-color: #1a1a1a; color: #fff; }
         .sub-title { letter-spacing: 0.3em; font-size: 0.65rem; color: #8c8c8c; }
         .fade-in { animation: fadeIn 2s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<footer class="p-10 bg-white text-center border-t border-gray-100">
-    <p class="text-[10px] text-gray-300 tracking-widest uppercase">© 2026 ME-XPERIENCE LUXURY TECH</p>
-    <a href="/master-admin-dashboard" class="text-[8px] text-gray-200 hover:text-gray-400 transition mt-4 inline-block">Accesso Riservato</a>
-</footer>
-    <body>
+<body>
 
     <nav class="flex justify-between items-center px-8 py-6 sticky top-0 bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
         <div class="text-xs tracking-[0.4em] font-light">MESSINA</div>
         <div class="text-xl tracking-[0.3em] font-light uppercase serif">ME-XPERIENCE</div>
         <div class="flex gap-6">
-             <a href="/services" class="text-[10px] tracking-widest uppercase hover:text-gray-400 transition">Servizi</a>
-             <a href="/master-admin-dashboard" class="text-[10px] tracking-widest uppercase text-gray-300">Admin</a>
+             <a href="#booking" class="text-[10px] tracking-widest uppercase hover:text-gray-400 transition">Booking</a>
+             <a href="/master-admin-dashboard" class="text-[10px] tracking-widest uppercase text-gray-300 hover:text-black transition">Admin</a>
         </div>
     </nav>
 
@@ -44,12 +40,12 @@
             <p class="text-sm font-light leading-relaxed text-gray-600 mb-10 px-10">
                 Scivola sulle acque leggendarie dello Stretto di Messina. Un viaggio privato tra storia, leggenda e l'eccellenza dell'ospitalità siciliana.
             </p>
-            <button onclick="scrollToBooking()" class="btn-luxury px-10 py-4">Scopri di Più</button>
+            <button onclick="scrollToBooking()" class="btn-luxury px-10 py-4">Inizia l'esperienza</button>
         </div>
     </header>
 
     <section id="booking" class="py-24 px-6 bg-white">
-        <div class="max-w-4xl mx-auto border border-gray-100 p-12">
+        <div class="max-w-4xl mx-auto border border-gray-100 p-8 md:p-16">
             <div class="grid md:grid-cols-2 gap-16">
                 
                 <div class="flex flex-col justify-center">
@@ -75,7 +71,7 @@
                         </select>
                     </div>
 
-                    <button onclick="handleBooking()" class="w-full bg-[#1a1a1a] text-white py-5 text-[10px] tracking-[0.3em] uppercase font-bold hover:bg-gray-800 transition shadow-lg">
+                    <button onclick="handleBooking()" class="w-full bg-[#1a1a1a] text-white py-5 text-[10px] tracking-[0.3em] uppercase font-bold hover:bg-gray-800 transition shadow-xl">
                         Verifica Disponibilità
                     </button>
                 </div>
@@ -84,30 +80,34 @@
         </div>
     </section>
 
-    <footer class="py-20 text-center border-t border-gray-50">
-        <div class="serif italic text-2xl mb-6">ME-Xperience</div>
-        <p class="sub-title uppercase mb-10">Messina • Sicilia • Italia</p>
-        <div class="flex justify-center gap-8 text-[10px] tracking-widest text-gray-400">
-            <a href="#" class="hover:text-black">PRIVACY</a>
-            <a href="#" class="hover:text-black">TERMINI</a>
-            <a href="#" class="hover:text-black">CONTATTI</a>
+    <footer class="bg-white border-t border-gray-100 pt-20 pb-10">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <div class="serif italic text-3xl mb-6">ME-Xperience</div>
+            <p class="sub-title uppercase mb-10">Messina • Sicilia • Italia</p>
+            
+            <div class="flex justify-center gap-8 text-[10px] tracking-widest text-gray-400 uppercase mb-12">
+                <a href="#" class="hover:text-black transition">Privacy</a>
+                <a href="#" class="hover:text-black transition">Termini</a>
+                <a href="/master-admin-dashboard" class="hover:text-black transition">Private Access</a>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 mb-12">
+                <p class="text-slate-500 text-[10px] uppercase tracking-widest mb-4">Sei un professionista del settore?</p>
+                <a href="/partner-registration" class="inline-block px-8 py-3 border border-yellow-600 text-yellow-700 rounded-full text-[9px] font-bold uppercase tracking-widest hover:bg-yellow-600 hover:text-white transition">
+                    Collabora con ME-X
+                </a>
+            </div>
+
+            <p class="text-[8px] text-gray-400 uppercase tracking-[0.2em] leading-relaxed italic mb-8 max-w-2xl mx-auto">
+                ME-Xperience opera come piattaforma di intermediazione. I servizi di trasporto e le attività turistiche sono eseguiti da operatori professionali autorizzati.
+            </p>
+            
+            <p class="text-[10px] text-gray-300 tracking-widest uppercase italic">© 2026 ME-XPERIENCE LUXURY TECH</p>
         </div>
-   <div class="max-w-4xl mx-auto px-6 pb-12 mt-20">
-    <p class="text-[8px] text-gray-300 uppercase tracking-[0.2em] leading-relaxed text-center italic">
-        ME-Xperience opera come piattaforma di intermediazione tra ospiti e fornitori terzi indipendenti. 
-        I servizi di trasporto e le attività turistiche sono eseguiti da operatori professionali autorizzati e assicurati. 
-        ME-Xperience non è responsabile per l'esecuzione diretta delle prestazioni ma garantisce il rigoroso rispetto degli standard qualitativi del brand.
-    </p>
-</div>
-   <a href="/login" class="text-[8px] text-gray-300 uppercase tracking-widest hover:text-black transition">Private Access</a>
     </footer>
-<footer class="mt-20 p-10 border-t border-white/10 text-center">
-    <p class="text-slate-500 text-sm mb-4">Gestisci una struttura o un'esperienza?</p>
-    <a href="/partner-registration" class="inline-block px-6 py-2 border border-yellow-500/50 text-yellow-500 rounded-full text-xs font-bold uppercase hover:bg-yellow-500 hover:text-black transition">
-        Collabora con ME-X
-    </a>
-</footer>
+
     <script>
+        // Sostituire con la tua Chiave Pubblica reale di Stripe
         const stripe = Stripe('TUA_CHIAVE_PUBBLICA_STRIPE');
 
         function scrollToBooking() {
@@ -126,15 +126,23 @@
             const urlParams = new URLSearchParams(window.location.search);
             const partnerId = urlParams.get('ref') || 'DIRECT';
 
-            const response = await fetch('/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ partnerId, date, time })
-            });
+            try {
+                // Endpoint aggiornato per matchare server.js
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ partnerId, date, time })
+                });
 
-            const session = await response.json();
-            if (session.id) {
-                await stripe.redirectToCheckout({ sessionId: session.id });
+                const session = await response.json();
+                if (session.id) {
+                    await stripe.redirectToCheckout({ sessionId: session.id });
+                } else {
+                    alert("Errore nella creazione della sessione. Riprova.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connessione al server fallita.");
             }
         }
     </script>
