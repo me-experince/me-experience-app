@@ -3,80 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Master Control | Executive</title>
+    <title>ME-X Executive | Master Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #fcfcfc; color: #1a1a1a; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .sidebar-link { transition: all 0.3s; letter-spacing: 0.1em; font-size: 0.7rem; }
-        .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; font-weight: 600; }
-        .card-executive { background: white; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .sidebar-link { transition: all 0.3s; letter-spacing: 0.15em; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
+        .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; }
+        .executive-card { background: white; border: 1px solid #f2f2f2; transition: all 0.3s ease; }
+        .executive-card:hover { border-color: #1a1a1a; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .stat-label { letter-spacing: 0.2em; font-size: 0.6rem; color: #8c8c8c; text-transform: uppercase; }
+        input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #1a1a1a; }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <aside class="w-72 bg-white border-r border-gray-100 p-10 flex flex-col gap-12 sticky top-0 h-screen">
+    <aside class="w-64 bg-white border-r border-gray-100 p-8 flex flex-col gap-10 sticky top-0 h-screen z-50">
         <div>
             <h1 class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</h1>
-            <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1">Master Control</p>
+            <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1 italic">Executive Admin</p>
         </div>
 
         <nav class="flex flex-col gap-6">
-            <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link text-left pl-4 active">OVERVIEW</button>
-            <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">PARTNERS</button>
-            <button onclick="showSection('slots')" id="nav-slots" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">LOGISTICA</button>
-            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">FINANZA</button>
+            <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link text-left pl-4 active uppercase">Overview</button>
+            <button onclick="showSection('analytics')" id="nav-analytics" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Statistiche</button>
+            <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Anagrafica Partner</button>
+            <button onclick="showSection('services')" id="nav-services" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Esperienze & Servizi</button>
+            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Finanza Stripe</button>
         </nav>
     </aside>
 
-    <main class="flex-1 p-16">
-        
+    <main class="flex-1 p-12 overflow-y-auto">
+
         <section id="overview" class="content-section">
-            <h2 class="text-4xl serif italic mb-12">Stato Globale</h2>
-            <div class="grid grid-cols-3 gap-10">
-                <div class="card-executive p-8">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Fatturato Lordo</p>
-                    <h3 class="text-3xl serif italic">€ 14.280,00</h3>
+            <h2 class="text-4xl serif italic mb-10">Executive Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="executive-card p-6 text-center">
+                    <p class="stat-label mb-2">Fatturato Mese</p>
+                    <p class="text-2xl serif">€ 12.450</p>
                 </div>
-                <div class="card-executive p-8">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Booking Attivi</p>
-                    <h3 class="text-3xl serif italic text-gray-700">119</h3>
+                <div class="executive-card p-6 text-center border-l-4 border-l-yellow-500">
+                    <p class="stat-label mb-2">Best Partner</p>
+                    <p class="text-xs font-bold italic uppercase">Four Seasons Taormina</p>
                 </div>
-                <div class="card-executive p-8">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Tasso Conversione</p>
-                    <h3 class="text-3xl serif italic text-gray-700">4.2%</h3>
+                <div class="executive-card p-6 text-center">
+                    <p class="stat-label mb-2">Servizio Top</p>
+                    <p class="text-xs font-bold italic uppercase">Alba sullo Stretto</p>
+                </div>
+                <div class="executive-card p-6 text-center">
+                    <p class="stat-label mb-2">Provvigioni Partner</p>
+                    <p class="text-2xl serif italic">€ 1.860</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="executive-card p-8">
+                    <h3 class="text-xs tracking-widest uppercase font-bold mb-6">Vendite per Struttura</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="italic font-medium">B&B Duomo Messina</span>
+                            <span class="font-bold">€ 4.200 (34%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1"><div class="bg-black h-1" style="width: 34%"></div></div>
+                        
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="italic font-medium">Villa Sant'Andrea</span>
+                            <span class="font-bold">€ 3.100 (25%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1"><div class="bg-black h-1" style="width: 25%"></div></div>
+                    </div>
+                </div>
+                
+                <div class="executive-card p-8">
+                    <h3 class="text-xs tracking-widest uppercase font-bold mb-6">Ranking Servizi</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center text-xs italic">
+                            <span>1. Notte del Mito (Felucca)</span>
+                            <span class="text-green-600">+12%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs italic border-t border-gray-50 pt-2">
+                            <span>2. Transfer Aeroporto CTA</span>
+                            <span class="text-gray-400">Stabile</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="partners" class="content-section hidden">
-            <h2 class="text-4xl serif italic mb-12">Gestione Partner</h2>
-            <div class="card-executive rounded-sm overflow-hidden">
-                <table class="w-full text-left text-xs uppercase tracking-widest">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-400">
+            <div class="flex justify-between items-end mb-10">
+                <h2 class="text-4xl serif italic">Anagrafica Strutture</h2>
+                <button onclick="toggleModal('partner-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
+                    + Aggiungi Struttura
+                </button>
+            </div>
+
+            <div class="executive-card">
+                <table class="w-full text-left text-[10px] tracking-widest uppercase">
+                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 italic">
                         <tr>
-                            <th class="p-6">Struttura</th>
-                            <th>ID</th>
-                            <th>Commissioni</th>
-                            <th class="text-right p-6">Azioni</th>
+                            <th class="p-6">Nome Struttura</th>
+                            <th>Tipologia</th>
+                            <th>Calendario Slot</th>
+                            <th>Vendite</th>
+                            <th class="p-6 text-right">Azioni</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-600">
+                    <tbody class="text-gray-600 italic">
                         <tr class="border-b border-gray-50">
-                            <td class="p-6 font-semibold text-black">B&B Duomo Messina</td>
-                            <td>BB-01</td>
-                            <td>€ 420,00</td>
-                            <td class="text-right p-6 italic">Visualizza QR</td>
+                            <td class="p-6 font-bold text-black uppercase">B&B Duomo</td>
+                            <td>Bed & Breakfast</td>
+                            <td><button class="text-yellow-600 underline">Apri Slot</button></td>
+                            <td class="font-bold">€ 2.450</td>
+                            <td class="p-6 text-right"><button class="hover:text-black">Modifica</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
+        <section id="services" class="content-section hidden">
+            <div class="flex justify-between items-end mb-10">
+                <h2 class="text-4xl serif italic">Esperienze & Servizi</h2>
+                <button onclick="toggleModal('service-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
+                    + Crea Nuovo Prodotto
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="executive-card p-6 flex gap-4">
+                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=200" class="w-20 h-20 object-cover grayscale-[0.5]">
+                    <div>
+                        <h4 class="serif italic text-xl">Notte del Mito</h4>
+                        <p class="stat-label">Esperienza • € 120</p>
+                        <p class="text-[9px] mt-2 text-green-600 font-bold uppercase tracking-widest">Attivo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <div id="partner-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
+        <div class="bg-white max-w-lg w-full p-10 shadow-2xl relative">
+            <button onclick="toggleModal('partner-modal')" class="absolute top-6 right-6 text-gray-400">✕</button>
+            <h3 class="text-2xl serif italic mb-8">Nuova Struttura Ricettiva</h3>
+            <div class="space-y-6">
+                <input type="text" placeholder="NOME STRUTTURA" class="w-full">
+                <select class="w-full">
+                    <option value="">TIPOLOGIA</option>
+                    <option value="hotel">Hotel di Lusso</option>
+                    <option value="bnb">Bed & Breakfast</option>
+                    <option value="villa">Villa / Casa Vacanze</option>
+                    <option value="resort">Resort</option>
+                </select>
+                <input type="number" placeholder="COMMISSIONE %" class="w-full">
+                <button class="w-full bg-black text-white py-4 text-[10px] font-bold tracking-widest uppercase">Salva Anagrafica</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="service-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
+        <div class="bg-white max-w-lg w-full p-10 shadow-2xl relative">
+            <button onclick="toggleModal('service-modal')" class="absolute top-6 right-6 text-gray-400">✕</button>
+            <h3 class="text-2xl serif italic mb-8">Nuovo Prodotto / Servizio</h3>
+            <div class="space-y-6">
+                <input type="text" placeholder="NOME ESPERIENZA O SERVIZIO" class="w-full">
+                <select class="w-full">
+                    <option value="exp">ESPERIENZA (Tour, Barca, etc)</option>
+                    <option value="serv">SERVIZIO (Transfer, Concierge)</option>
+                </select>
+                <input type="number" placeholder="PREZZO AL PUBBLICO €" class="w-full">
+                <button class="w-full bg-black text-white py-4 text-[10px] font-bold tracking-widest uppercase">Crea Prodotto</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList
+            document.querySelectorAll('.sidebar-link').forEach(l => {
+                l.classList.remove('active', 'text-black');
+                l.classList.add('text-gray-400');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            const navBtn = document.getElementById('nav-' + id);
+            navBtn.classList.add('active', 'text-black');
+            navBtn.classList.remove('text-gray-400');
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
