@@ -4,49 +4,56 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.static('public')); 
 
-// 1. DATABASE SIMULATO POTENZIATO (Unico e completo)
-const db = {
-    bookings: [
-        { id: 1, partner_id: 'BB_DUOMO', amount: 120, date: '2026-02-20', status: 'completed' },
-        { id: 2, partner_id: 'GANZIRRI_SUNSET', amount: 85, date: '2026-02-21', status: 'completed' }
-    ],
-    partners: [
-        { id: 'BB_DUOMO', name: 'B&B Duomo Elegance', commission_rate: 0.15, qr_scans: 150 },
-        { id: 'GANZIRRI_SUNSET', name: 'Ganzirri Sunset House', commission_rate: 0.12, qr_scans: 85 }
-    ],
-    providers: [
-        { id: 'SEA_MASTER', name: 'Capitan Ciccio', role: 'provider' }
-    ]
-};
+// Serve i file statici dalla cartella 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
-// 2. ROTTE DASHBOARD CON PROTEZIONE
+// --- ROTTE DELLE DASHBOARD ---
 
-// Rotta Admin PROTETTA (Accedi con: me-xperience.com/admin?key=MESSINA_PROVINCIA_2026)
-app.get('/admin', (req, res) => {
-    const accessKey = req.query.key;
-    if (accessKey === 'MESSINA_PROVINCIA_2026') { 
-        res.sendFile(path.join(__dirname, 'public/admin.html'));
-    } else {
-        res.status(403).send('<center><h1>⛔ Accesso Negato</h1><p>Chiave di comando errata o mancante.</p></center>');
+// Super Admin: Controllo totale
+app.get('/master-admin-dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/admin.html'));
+});
+
+// Partner: Dashboard per i B&B (es: /partner?id=BB_DUOMO)
+app.get('/partner-panel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/partner.html'));
+});
+
+// Provider: Dashboard per i Fornitori (es: /provider?id=BOAT_01)
+app.get('/provider-panel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/provider.html'));
+});
+
+// --- SISTEMA DI PAGAMENTO STRIPE ---
+
+app.post('/create-checkout-session', async (req, res) => {
+    try {
+        const { partnerId } = req.body;
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [{
+                price_data: {
+                    currency: 'eur',
+                    product_data: { 
+                        name: 'Notte del Mito - ME-Xperience',
+                        description: 'Tour esclusivo nello Stretto di Messina'
+                    },
+                    unit_amount: 12000, // €120.00
+                },
+                quantity: 1,
+            }],
+            metadata: { partner_ref: partnerId || 'DIRECT' },
+            mode: 'payment',
+            success_url: 'https://me-xperience.com/success',
+            cancel_url: 'https://me-xperience.com/cancel',
+        });
+        res.json({ id: session.id });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
     }
 });
 
-// Rotte Partner e Fornitore (Semplici per ora)
-app.get('/partner/:id', (req, res) => res.sendFile(path.join(__dirname, 'public/partner.html')));
-app.get('/provider/:id', (req, res) => res.sendFile(path.join(__dirname, 'public/provider.html')));
-
-// 3. API PER I DATI (Servono a far funzionare i grafici)
-app.get('/api/stats', (req, res) => {
-    res.json({
-        totalRevenue: db.bookings.reduce((sum, b) => sum + b.amount, 0),
-        bookingCount: db.bookings.length,
-        partners: db.partners,
-        recentBookings: db.bookings.slice(-5)
-    });
-});
-
-// 4. AVVIO SERVER
+// Avvio Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server ME-XPERIENCE pronto sulla porta ${PORT}`));
+app.listen(PORT, () => console.log(`ME-Xperience Engine running on port ${PORT}`));
