@@ -9,9 +9,9 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; overflow: hidden; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .input-luxury { border-bottom: 1px solid #e5e7eb; transition: all 0.4s; width: 100%; padding: 15px 0; font-size: 12px; outline: none; text-align: center; letter-spacing: 0.1em; }
+        .input-luxury { border-bottom: 1px solid #e5e7eb; transition: all 0.4s; width: 100%; padding: 15px 0; font-size: 12px; outline: none; text-align: center; letter-spacing: 0.1em; background: transparent; }
         .input-luxury:focus { border-color: #1a1a1a; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.8s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -21,121 +21,66 @@
     <div class="max-w-sm w-full text-center fade-in">
         <div class="mb-16">
             <h1 class="serif text-4xl italic mb-2 tracking-tight">ME-Xperience</h1>
-            <p class="text-[9px] tracking-[0.5em] text-gray-400 uppercase">Sicily Executive Concierge</p>
+            <p class="text-[9px] tracking-[0.5em] text-gray-400 uppercase font-bold">Sicily Executive Concierge</p>
         </div>
 
         <div id="login-section" class="space-y-8">
             <div class="space-y-4">
-                <input type="email" id="login-email" placeholder="EMAIL" class="input-luxury">
-                <input type="password" id="login-pass" placeholder="PASSWORD" class="input-luxury">
+                <input type="email" id="login-email" placeholder="EMAIL" class="input-luxury uppercase">
+                <input type="password" id="login-pass" placeholder="PASSWORD" class="input-luxury uppercase">
             </div>
-            <button onclick="handleLogin()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition-all duration-500">
+            
+            <button onclick="handleLogin()" id="loginBtn" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition-all duration-500 shadow-xl">
                 Accedi al Pannello
             </button>
-            <div class="flex justify-between items-center pt-4 text-[9px] tracking-[0.2em] text-gray-400 uppercase">
-                <button onclick="toggleSection('forgot')" class="hover:text-black transition">Dimenticata?</button>
-                <button onclick="toggleSection('register')" class="hover:text-black transition">Registra Struttura</button>
-            </div>
-        </div>
 
-        <div id="register-section" class="space-y-8 hidden">
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-4 italic font-bold">Richiesta Affiliazione Partner</p>
-            <div class="space-y-4">
-                <input type="text" id="reg-structure" placeholder="NOME DELLA STRUTTURA" class="input-luxury">
-                <input type="email" id="reg-email" placeholder="EMAIL PROFESSIONALE" class="input-luxury">
-                <input type="password" id="reg-pass" placeholder="PASSWORD" class="input-luxury">
+            <div class="flex justify-between items-center pt-4 text-[9px] tracking-[0.2em] text-gray-400 uppercase font-bold">
+                <button onclick="toggleSection('forgot')" class="hover:text-black transition">Dimenticata?</button>
+                <a href="/partner-registration" class="hover:text-black transition">Registra Struttura</a>
             </div>
-            <button onclick="handleRegister()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition">
-                Invia Candidatura
-            </button>
-            <button onclick="toggleSection('login')" class="text-[9px] tracking-[0.2em] text-gray-400 uppercase hover:text-black transition">Torna al Login</button>
         </div>
 
         <div id="forgot-section" class="space-y-8 hidden">
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-4 italic font-bold">Recupero Credenziali</p>
-            <input type="email" id="reset-email" placeholder="INSERISCI EMAIL" class="input-luxury">
-            <button onclick="handleReset()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition">
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-4 italic font-bold text-center">Recupero Credenziali Accesso</p>
+            <input type="email" id="reset-email" placeholder="INSERISCI EMAIL DI REGISTRAZIONE" class="input-luxury uppercase">
+            
+            <button onclick="handleReset()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition shadow-xl">
                 Invia Link di Reset
             </button>
+            
             <button onclick="toggleSection('login')" class="text-[9px] tracking-[0.2em] text-gray-400 uppercase hover:text-black transition">Torna al Login</button>
         </div>
 
-        <div id="msg" class="mt-8 text-[10px] uppercase tracking-widest text-red-400 hidden"></div>
+        <div id="msg" class="mt-8 text-[10px] uppercase tracking-widest text-red-500 font-bold hidden"></div>
     </div>
 
     <script>
-        // Funzione per switchare tra i form con eleganza
+        // Navigazione tra sezioni del login
         function toggleSection(section) {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('register-section').classList.add('hidden');
-            document.getElementById('forgot-section').classList.add('hidden');
+            const sections = ['login', 'forgot'];
+            sections.forEach(s => document.getElementById(s + '-section').classList.add('hidden'));
             document.getElementById(section + '-section').classList.remove('hidden');
             document.getElementById('msg').classList.add('hidden');
         }
 
-        // 1. Gestione Login
+        // 1. Gestione Login Reale
         async function handleLogin() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-pass').value;
+            const msgEl = document.getElementById('msg');
+            const btn = document.getElementById('loginBtn');
+
+            if(!email || !password) {
+                showError("Inserire Email e Password");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "VERIFICA IN CORSO...";
 
             try {
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email, password })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    localStorage.setItem('mex_token', data.token);
-                    // Redirect basato sul ruolo
-                    window.location.href = data.role === 'admin' ? '/admin' : '/partner';
-                } else {
-                    showError("Credenziali non valide");
-                }
-            } catch (e) {
-                showError("Errore di connessione al server");
-            }
-        }
-
-        // 2. Gestione Registrazione
-        async function handleRegister() {
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-pass').value;
-            const structure = document.getElementById('reg-structure').value;
-
-            const res = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email, password, structure })
-            });
-            const data = await res.json();
-
-            if(data.success) {
-                alert("Richiesta inviata. Il team ME-X valuterà la tua struttura entro 24 ore.");
-                toggleSection('login');
-            } else {
-                showError(data.message);
-            }
-        }
-
-        // 3. Gestione Reset
-        async function handleReset() {
-            const email = document.getElementById('reset-email').value;
-            await fetch('/api/auth/forgot-password', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email })
-            });
-            alert("Se l'email è presente nei nostri archivi, riceverai un link di reset.");
-            toggleSection('login');
-        }
-
-        function showError(text) {
-            const el = document.getElementById('msg');
-            el.innerText = text;
-            el.classList.remove('hidden');
-        }
-    </script>
-</body>
-</html>
+                // Simulazione di chiamata API (o reale se il backend è pronto)
+                // In produzione: const res = await fetch('/api/auth/login', { ... })
+                
+                // LOGICA DI TEST PER IL LANCIO:
+                if (
