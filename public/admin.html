@@ -125,6 +125,62 @@
             </div>
         </section>
 
+      <section id="catalogo" class="content-section hidden">
+    <h2 class="text-4xl serif italic mb-10">Product Management</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 italic">
+        <div class="lg:col-span-1 executive-card p-10 bg-white border-t-4 border-amber-600">
+            <h3 class="text-[10px] font-bold uppercase tracking-widest mb-10">Configura Nuovo Prodotto</h3>
+            <div class="space-y-8">
+                <div>
+                    <p class="text-[8px] text-gray-400 uppercase font-bold mb-2">Tipologia</p>
+                    <select id="p-type" class="w-full border-b border-gray-100 py-2 outline-none uppercase text-[10px]">
+                        <option value="attivita">ATTIVITÀ (Ha una data/ora fissa)</option>
+                        <option value="servizio">SERVIZIO (Prezzo base o km)</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="p-name" placeholder="NOME PRODOTTO" class="w-full border-b border-gray-100 py-2 outline-none uppercase text-[10px]">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="p-price" placeholder="PREZZO (€)" class="border-b border-gray-100 py-2 outline-none text-[10px]">
+                    <input type="text" id="p-provider" placeholder="FORNITORE" class="border-b border-gray-100 py-2 outline-none text-[10px]">
+                </div>
+                <div>
+                    <textarea id="p-desc" placeholder="DESCRIZIONE EMOZIONALE" class="w-full border-b border-gray-100 py-2 outline-none text-[10px] h-20"></textarea>
+                </div>
+                <button onclick="publishProduct()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-amber-600 transition">Pubblica Prodotto</button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-[10px] font-bold uppercase tracking-widest">Prodotti nel Catalogo</span>
+                <span class="text-[10px] text-gray-300">Sync: Global</span>
+            </div>
+            <div id="product-list-container" class="space-y-4 font-bold italic">
+                </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Logica per gestire i prodotti nell'admin
+async function publishProduct() {
+    const product = {
+        type: document.getElementById('p-type').value,
+        name: document.getElementById('p-name').value,
+        price: document.getElementById('p-price').value,
+        provider: document.getElementById('p-provider').value,
+        desc: document.getElementById('p-desc').value
+    };
+
+    if(!product.name || !product.price) return alert("Dati mancanti");
+
+    // Invio al server (Logica fetch... come già visto)
+    alert(`Prodotto ${product.name} aggiunto alla collezione ${product.type}.`);
+}
+</script>  
     </main>
 
     <script>
