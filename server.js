@@ -89,3 +89,6 @@ app.get('/api/availability/:experienceId', (req, res) => {
     const data = availability.filter(a => a.experienceId === experienceId);
     res.json(data);
 });
+app.get('/services', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/services.html'));
+});
