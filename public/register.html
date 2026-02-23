@@ -1,35 +1,89 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-X | Partner Registration</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>ME-X | Diventa Partner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .input-field { border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0; width: 100%; outline: none; transition: border-color 0.3s; font-size: 0.9rem; }
+        .input-field:focus { border-color: #1a1a1a; }
+        .label-style { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: #8c8c8c; font-weight: 600; margin-top: 1.5rem; display: block; }
+    </style>
 </head>
-<body class="bg-slate-950 text-white p-6 md:p-12">
-    <div class="max-w-2xl mx-auto bg-slate-900 rounded-3xl p-8 border border-white/10 shadow-2xl">
-        <h1 class="text-3xl font-black italic mb-2">JOIN THE MYTH</h1>
-        <p class="text-slate-400 mb-8">Sottoscrizione contratto digitale ME-Xperience</p>
-        
-        <form id="regForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" placeholder="Nome Struttura / Società" class="bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none" required>
-                <input type="text" placeholder="P.IVA / Codice Fiscale" class="bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none" required>
-            </div>
-            
-            <input type="email" placeholder="Email Ufficiale" class="w-full bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none">
-            
-            <div class="bg-yellow-500/5 p-6 rounded-2xl border border-yellow-500/20">
-                <h3 class="text-yellow-500 font-bold mb-4 uppercase text-xs">Dati per i Pagamenti (Payouts)</h3>
-                <input type="text" id="iban" placeholder="Codice IBAN (IT...)" class="w-full bg-slate-950 border border-white/10 p-4 rounded-xl font-mono text-sm uppercase tracking-widest text-yellow-500 focus:border-yellow-500 outline-none">
+<body class="flex items-center justify-center min-h-screen p-6">
+    <div class="max-w-xl w-full">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl serif italic tracking-widest uppercase">ME-X</h1>
+            <p class="text-[9px] uppercase tracking-[0.3em] text-gray-400 mt-2 font-bold italic">Partner Affiliation Program</p>
+        </header>
+
+        <form id="registrationForm" class="space-y-4">
+            <div>
+                <label class="label-style">Ragione Sociale / Nome Struttura</label>
+                <input type="text" id="legalName" class="input-field" placeholder="Es. B&B Il Duomo" required>
             </div>
 
-            <div class="p-4 bg-slate-800/50 rounded-xl border border-white/5 text-[10px] text-slate-500 leading-relaxed">
-                <p>Accettando, sottoscrivi il contratto di affiliazione ME-Xperience. Le commissioni verranno accreditate automaticamente sull'IBAN indicato entro 7 giorni lavorativi dall'evento.</p>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="label-style">Tipo Struttura</label>
+                    <select id="entityType" class="input-field">
+                        <option value="bnb">B&B</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="villa">Villa / Resort</option>
+                        <option value="provider">Fornitore Esperienze</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label-style">P.IVA / Cod. Fiscale</label>
+                    <input type="text" id="taxId" class="input-field" placeholder="0123456789">
+                </div>
             </div>
 
-            <button type="submit" class="w-full py-5 bg-yellow-600 text-black font-black rounded-2xl uppercase hover:bg-yellow-500 transition shadow-lg shadow-yellow-600/20">
-                Firma e Invia Contratto
+            <div>
+                <label class="label-style">Referente (Nome e Cognome)</label>
+                <input type="text" id="contactName" class="input-field" placeholder="Mario Rossi" required>
+            </div>
+
+            <div>
+                <label class="label-style">Email per Comunicazioni</label>
+                <input type="email" id="email" class="input-field" placeholder="mario@esempio.it" required>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-2xl mt-8">
+                <label class="label-style text-amber-700">Dati per Acccredito Provvigioni (IBAN)</label>
+                <input type="text" id="iban" class="input-field font-mono uppercase tracking-widest border-amber-200" placeholder="IT 00 X 00000 00000 000000000000" required>
+                <p class="text-[8px] text-gray-400 mt-2 italic">Assicurati che l'IBAN sia corretto per evitare ritardi nei pagamenti.</p>
+            </div>
+
+            <div class="flex items-start gap-3 mt-8">
+                <input type="checkbox" id="contractAccept" class="mt-1" required>
+                <label class="text-[10px] text-gray-500 leading-relaxed uppercase tracking-tight">
+                    Accetto i termini del <span class="underline cursor-pointer">Contratto Digitale ME-X</span> e autorizzo il trattamento dei dati per la gestione delle prenotazioni e dei pagamenti.
+                </label>
+            </div>
+
+            <button type="submit" class="w-full bg-black text-white py-5 mt-10 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-800 transition shadow-xl">
+                Invia Candidatura & Firma
             </button>
         </form>
+        
+        <div id="successMessage" class="hidden text-center p-10">
+            <h2 class="serif italic text-2xl">Grazie per la richiesta.</h2>
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 mt-4 leading-loose">Il nostro team verificherà i dati e ti invierà il link alla tua dashboard personale entro 24 ore.</p>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Logica per inviare i dati al tuo database/server
+            this.classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+        });
+    </script>
 </body>
 </html>
