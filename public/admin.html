@@ -3,156 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Master Control</title>
+    <title>ME-X Master Control | Executive</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        .gold-glow { box-shadow: 0 0 20px rgba(191, 149, 63, 0.2); }
-        .sidebar-item:hover { background: rgba(255, 255, 255, 0.05); }
-        .active-section { border-left: 4px solid #eab308; background: rgba(234, 179, 8, 0.05); }
+        body { font-family: 'Montserrat', sans-serif; background-color: #fcfcfc; color: #1a1a1a; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .sidebar-link { transition: all 0.3s; letter-spacing: 0.1em; font-size: 0.7rem; }
+        .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; font-weight: 600; }
+        .card-executive { background: white; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans flex min-h-screen">
+<body class="flex min-h-screen">
 
-    <aside class="w-72 border-r border-white/10 p-6 flex flex-col gap-8 bg-slate-900/50">
+    <aside class="w-72 bg-white border-r border-gray-100 p-10 flex flex-col gap-12 sticky top-0 h-screen">
         <div>
-            <h1 class="text-2xl font-black italic tracking-tighter">ME-XPERIENCE</h1>
-            <p class="text-[10px] text-yellow-500 font-bold uppercase tracking-[0.2em]">Master Control</p>
+            <h1 class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</h1>
+            <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1">Master Control</p>
         </div>
 
-        <nav class="flex flex-col gap-2">
-            <button onclick="showSection('overview')" class="sidebar-item p-4 rounded-xl text-left transition active-section" id="btn-overview">Overview</button>
-            <button onclick="showSection('gestione-partner')" class="sidebar-item p-4 rounded-xl text-left transition" id="btn-gestione-partner">Gestione Partner</button>
-            <button onclick="showSection('esperienze')" class="sidebar-item p-4 rounded-xl text-left transition" id="btn-esperienze">Esperienze & Slot</button>
-            <button onclick="showSection('config-stripe')" class="sidebar-item p-4 rounded-xl text-left transition" id="btn-config-stripe">Configurazione Stripe</button>
+        <nav class="flex flex-col gap-6">
+            <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link text-left pl-4 active">OVERVIEW</button>
+            <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">PARTNERS</button>
+            <button onclick="showSection('slots')" id="nav-slots" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">LOGISTICA</button>
+            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black">FINANZA</button>
         </nav>
     </aside>
 
-    <main class="flex-1 p-10 overflow-y-auto">
+    <main class="flex-1 p-16">
         
         <section id="overview" class="content-section">
-            <h2 class="text-3xl font-bold mb-8 text-white/90">Dashboard Overview</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-slate-800/50 p-6 rounded-3xl border border-white/10 gold-glow text-center">
-                    <p class="text-slate-400 uppercase text-[10px] mb-2 font-bold tracking-widest">Fatturato Lordo</p>
-                    <h2 class="text-4xl font-bold text-green-400 italic">€ 14.280</h2>
+            <h2 class="text-4xl serif italic mb-12">Stato Globale</h2>
+            <div class="grid grid-cols-3 gap-10">
+                <div class="card-executive p-8">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Fatturato Lordo</p>
+                    <h3 class="text-3xl serif italic">€ 14.280,00</h3>
                 </div>
-                <div class="bg-slate-800/50 p-6 rounded-3xl border border-white/10 text-center">
-                    <p class="text-slate-400 uppercase text-[10px] mb-2 font-bold tracking-widest">Prenotazioni 30gg</p>
-                    <h2 class="text-4xl font-bold text-yellow-500 italic">119</h2>
+                <div class="card-executive p-8">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Booking Attivi</p>
+                    <h3 class="text-3xl serif italic text-gray-700">119</h3>
                 </div>
-                <div class="bg-slate-800/50 p-6 rounded-3xl border border-white/10 text-center">
-                    <p class="text-slate-400 uppercase text-[10px] mb-2 font-bold tracking-widest">Costo Acquisizione (CAC)</p>
-                    <h2 class="text-4xl font-bold text-blue-400 italic">€ 0.00</h2>
-                </div>
-            </div>
-        </section>
-
-        <section id="gestione-partner" class="content-section hidden">
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="text-2xl font-bold">Anagrafica Strutture Partner</h3>
-                <button class="bg-yellow-600 text-black px-6 py-2 rounded-full font-black text-sm uppercase tracking-tighter">Add Partner</button>
-            </div>
-            <div class="space-y-4">
-                <div class="bg-slate-900 border border-white/10 p-6 rounded-3xl flex justify-between items-center">
-                    <div>
-                        <h4 class="font-bold text-xl uppercase italic">B&B Duomo Messina</h4>
-                        <p class="text-slate-500 text-xs">ID: BB-01 • Provvigione: 15%</p>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <div id="qrcode-bb01"></div>
-                        <button onclick="generateQR('https://me-xperience.com/?ref=BB01', 'qrcode-bb01')" class="bg-white/10 hover:bg-white/20 p-3 rounded-xl text-xs font-bold uppercase">Genera QR Link</button>
-                    </div>
+                <div class="card-executive p-8">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Tasso Conversione</p>
+                    <h3 class="text-3xl serif italic text-gray-700">4.2%</h3>
                 </div>
             </div>
         </section>
 
-        <section id="esperienze" class="content-section hidden">
-    <div class="flex justify-between items-center mb-8">
-        <h3 class="text-2xl font-bold text-blue-400 italic uppercase tracking-tighter">Calendario & Slot Operativi</h3>
-        <div class="flex gap-2">
-            <button class="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-xl text-xs font-bold uppercase border border-blue-500/30">Vista Mensile</button>
-            <button class="bg-slate-800 text-slate-400 px-4 py-2 rounded-xl text-xs font-bold uppercase">Configura Slot</button>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <div class="lg:col-span-2 bg-slate-900/50 border border-white/10 rounded-3xl p-6">
-            <div class="flex justify-between items-center mb-6 text-sm font-bold uppercase tracking-widest text-slate-500">
-                <button class="hover:text-white"><- Febbraio</button>
-                <span class="text-white text-lg italic">Marzo 2026</span>
-                <button class="hover:text-white">Aprile -></button>
-            </div>
-            
-            <div class="grid grid-cols-7 gap-2 text-center text-[10px] text-slate-500 mb-4 uppercase font-bold">
-                <div>Lun</div><div>Mar</div><div>Mer</div><div>Gio</div><div>Ven</div><div>Sab</div><div>Dom</div>
-            </div>
-            <div class="grid grid-cols-7 gap-2">
-                <script>
-                    for(let i=1; i<=31; i++) {
-                        let statusClass = "border-white/5 text-slate-600";
-                        let indicator = "";
-                        if(i === 24 || i === 25) { 
-                            statusClass = "border-yellow-500/50 text-white bg-yellow-500/5"; 
-                            indicator = "<span class='w-1 h-1 bg-yellow-500 rounded-full mt-1'></span>";
-                        }
-                        if(i === 28) { 
-                            statusClass = "border-green-500/50 text-white bg-green-500/5";
-                            indicator = "<span class='w-1 h-1 bg-green-500 rounded-full mt-1'></span>";
-                        }
-                        document.write(`
-                            <div class="h-20 border ${statusClass} rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-white/40 transition">
-                                <span class="text-xs font-bold">${i}</span>
-                                ${indicator}
-                            </div>
-                        `);
-                    }
-                </script>
-            </div>
-        </div>
-
-        <div class="space-y-6">
-            <div class="bg-slate-800 p-6 rounded-3xl border border-white/10 gold-glow">
-                <h4 class="text-sm font-bold text-yellow-500 mb-4 uppercase">Slot Giorno: 24 Marzo</h4>
-                
-                <div class="mb-4 p-4 bg-black/20 rounded-2xl border-l-4 border-green-500">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-bold text-xs uppercase">🌅 Alba sullo Stretto</span>
-                        <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded">DISPONIBILE</span>
-                    </div>
-                    <p class="text-[10px] text-slate-400">Ore: 06:30 - Posti: 6/12 liberi</p>
-                </div>
-
-                <div class="p-4 bg-black/20 rounded-2xl border-l-4 border-red-500">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-bold text-xs uppercase">🌙 Notte del Mito</span>
-                        <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded">FULL</span>
-                    </div>
-                    <p class="text-[10px] text-slate-400">Ore: 20:30 - Posti: 12/12 occupati</p>
-                </div>
-
-                <button class="w-full mt-6 py-3 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-tighter">
-                    Aggiungi Slot Straordinario
-                </button>
-            </div>
-
-            <div class="bg-blue-900/20 border border-blue-500/30 p-4 rounded-2xl">
-                <p class="text-[10px] text-blue-400 font-bold uppercase mb-1 italic">Previsioni Mare - 24/03</p>
-                <p class="text-xs text-slate-300 italic">"Possibili correnti forti in serata. Allertare Capitan Ciccio."</p>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-        <section id="config-stripe" class="content-section hidden">
-            <h3 class="text-2xl font-bold mb-8 text-purple-400">Gateway Stripe Payments</h3>
-            <div class="bg-black/30 p-8 rounded-3xl border border-white/5">
-                <p class="text-sm mb-4">La tua connessione Stripe è attiva in modalità: <span class="text-green-500 font-bold">LIVE</span></p>
-                <div class="p-4 bg-slate-800 rounded-xl font-mono text-xs text-slate-400">
-                    Webhook Secret: whsec_••••••••••••••••
-                </div>
+        <section id="partners" class="content-section hidden">
+            <h2 class="text-4xl serif italic mb-12">Gestione Partner</h2>
+            <div class="card-executive rounded-sm overflow-hidden">
+                <table class="w-full text-left text-xs uppercase tracking-widest">
+                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-400">
+                        <tr>
+                            <th class="p-6">Struttura</th>
+                            <th>ID</th>
+                            <th>Commissioni</th>
+                            <th class="text-right p-6">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600">
+                        <tr class="border-b border-gray-50">
+                            <td class="p-6 font-semibold text-black">B&B Duomo Messina</td>
+                            <td>BB-01</td>
+                            <td>€ 420,00</td>
+                            <td class="text-right p-6 italic">Visualizza QR</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -160,30 +78,5 @@
 
     <script>
         function showSection(id) {
-            // Nasconde tutte le sezioni
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            // Rimuove gli stili "active" dai bottoni
-            document.querySelectorAll('.sidebar-item').forEach(btn => {
-                btn.classList.remove('active-section');
-            });
-            // Mostra la sezione scelta e attiva il bottone
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById('btn-' + id).classList.add('active-section');
-        }
-
-        function generateQR(url, containerId) {
-            document.getElementById(containerId).innerHTML = ""; // Pulisce
-            new QRCode(document.getElementById(containerId), {
-                text: url,
-                width: 80,
-                height: 80,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        }
-    </script>
-</body>
-</html>
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList
