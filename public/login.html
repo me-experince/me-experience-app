@@ -5,36 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ME-X | Private Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,400&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; overflow: hidden; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .input-luxury { border-bottom: 1px solid #e2e2e2; transition: all 0.4s; }
-        .input-luxury:focus { border-color: #1a1a1a; outline: none; }
+        .input-luxury { border-bottom: 1px solid #e5e7eb; transition: all 0.4s; width: 100%; padding: 15px 0; font-size: 12px; outline: none; text-align: center; letter-spacing: 0.1em; }
+        .input-luxury:focus { border-color: #1a1a1a; }
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="max-w-sm w-full p-12 text-center">
-        <h1 class="serif text-4xl italic mb-2">ME-Xperience</h1>
-        <p class="text-[10px] tracking-[0.4em] text-gray-400 uppercase mb-12">Reserved Area</p>
-        
-        <div class="space-y-8">
-            <input type="password" id="access-code" placeholder="ACCESS CODE" class="input-luxury w-full py-3 text-center text-xs tracking-widest">
-            <button onclick="checkAccess()" class="w-full py-4 bg-black text-white text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-gray-800 transition">Entra</button>
+<body class="flex items-center justify-center min-h-screen p-6">
+
+    <div class="max-w-sm w-full text-center fade-in">
+        <div class="mb-16">
+            <h1 class="serif text-4xl italic mb-2 tracking-tight">ME-Xperience</h1>
+            <p class="text-[9px] tracking-[0.5em] text-gray-400 uppercase">Sicily Executive Concierge</p>
         </div>
-        <p id="error" class="text-[9px] text-red-400 mt-6 uppercase tracking-widest hidden">Accesso Negato</p>
+
+        <div id="login-section" class="space-y-8">
+            <div class="space-y-4">
+                <input type="email" id="login-email" placeholder="EMAIL" class="input-luxury">
+                <input type="password" id="login-pass" placeholder="PASSWORD" class="input-luxury">
+            </div>
+            <button onclick="handleLogin()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition-all duration-500">
+                Accedi al Pannello
+            </button>
+            <div class="flex justify-between items-center pt-4 text-[9px] tracking-[0.2em] text-gray-400 uppercase">
+                <button onclick="toggleSection('forgot')" class="hover:text-black transition">Dimenticata?</button>
+                <button onclick="toggleSection('register')" class="hover:text-black transition">Registra Struttura</button>
+            </div>
+        </div>
+
+        <div id="register-section" class="space-y-8 hidden">
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-4 italic font-bold">Richiesta Affiliazione Partner</p>
+            <div class="space-y-4">
+                <input type="text" id="reg-structure" placeholder="NOME DELLA STRUTTURA" class="input-luxury">
+                <input type="email" id="reg-email" placeholder="EMAIL PROFESSIONALE" class="input-luxury">
+                <input type="password" id="reg-pass" placeholder="PASSWORD" class="input-luxury">
+            </div>
+            <button onclick="handleRegister()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition">
+                Invia Candidatura
+            </button>
+            <button onclick="toggleSection('login')" class="text-[9px] tracking-[0.2em] text-gray-400 uppercase hover:text-black transition">Torna al Login</button>
+        </div>
+
+        <div id="forgot-section" class="space-y-8 hidden">
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-4 italic font-bold">Recupero Credenziali</p>
+            <input type="email" id="reset-email" placeholder="INSERISCI EMAIL" class="input-luxury">
+            <button onclick="handleReset()" class="w-full bg-black text-white py-5 text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-zinc-800 transition">
+                Invia Link di Reset
+            </button>
+            <button onclick="toggleSection('login')" class="text-[9px] tracking-[0.2em] text-gray-400 uppercase hover:text-black transition">Torna al Login</button>
+        </div>
+
+        <div id="msg" class="mt-8 text-[10px] uppercase tracking-widest text-red-400 hidden"></div>
     </div>
 
     <script>
-        function checkAccess() {
-            const code = document.getElementById('access-code').value;
-            // Esempio semplice: la password è 'MEX2026'
-            if(code === 'MEX2026') {
-                localStorage.setItem('mex_auth', 'true');
-                window.location.href = '/master-admin-dashboard';
-            } else {
-                document.getElementById('error').classList.remove('hidden');
+        // Funzione per switchare tra i form con eleganza
+        function toggleSection(section) {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('register-section').classList.add('hidden');
+            document.getElementById('forgot-section').classList.add('hidden');
+            document.getElementById(section + '-section').classList.remove('hidden');
+            document.getElementById('msg').classList.add('hidden');
+        }
+
+        // 1. Gestione Login
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pass').value;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('mex_token', data.token);
+                    // Redirect basato sul ruolo
+                    window.location.href = data.role === 'admin' ? '/admin' : '/partner';
+                } else {
+                    showError("Credenziali non valide");
+                }
+            } catch (e) {
+                showError("Errore di connessione al server");
             }
+        }
+
+        // 2. Gestione Registrazione
+        async function handleRegister() {
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value;
+            const structure = document.getElementById('reg-structure').value;
+
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, password, structure })
+            });
+            const data = await res.json();
+
+            if(data.success) {
+                alert("Richiesta inviata. Il team ME-X valuterà la tua struttura entro 24 ore.");
+                toggleSection('login');
+            } else {
+                showError(data.message);
+            }
+        }
+
+        // 3. Gestione Reset
+        async function handleReset() {
+            const email = document.getElementById('reset-email').value;
+            await fetch('/api/auth/forgot-password', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email })
+            });
+            alert("Se l'email è presente nei nostri archivi, riceverai un link di reset.");
+            toggleSection('login');
+        }
+
+        function showError(text) {
+            const el = document.getElementById('msg');
+            el.innerText = text;
+            el.classList.remove('hidden');
         }
     </script>
 </body>
