@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ME-X | Diventa Partner</title>
+</head>
+<body class="bg-slate-950 text-white p-6 md:p-12">
+    <div class="max-w-2xl mx-auto bg-slate-900 rounded-3xl p-8 border border-white/10 shadow-2xl">
+        <h1 class="text-3xl font-black italic mb-2">JOIN THE MYTH</h1>
+        <p class="text-slate-400 mb-8">Sottoscrizione contratto digitale ME-Xperience</p>
+        
+        <form id="regForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" placeholder="Nome Struttura / Società" class="bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none" required>
+                <input type="text" placeholder="P.IVA / Codice Fiscale" class="bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none" required>
+            </div>
+            
+            <input type="email" placeholder="Email Ufficiale" class="w-full bg-slate-800 border border-white/5 p-4 rounded-xl focus:border-yellow-500 outline-none">
+            
+            <div class="bg-yellow-500/5 p-6 rounded-2xl border border-yellow-500/20">
+                <h3 class="text-yellow-500 font-bold mb-4 uppercase text-xs">Dati per i Pagamenti (Payouts)</h3>
+                <input type="text" id="iban" placeholder="Codice IBAN (IT...)" class="w-full bg-slate-950 border border-white/10 p-4 rounded-xl font-mono text-sm uppercase tracking-widest text-yellow-500 focus:border-yellow-500 outline-none">
+            </div>
+
+            <div class="p-4 bg-slate-800/50 rounded-xl border border-white/5 text-[10px] text-slate-500 leading-relaxed">
+                <p>Accettando, sottoscrivi il contratto di affiliazione ME-Xperience. Le commissioni verranno accreditate automaticamente sull'IBAN indicato entro 7 giorni lavorativi dall'evento.</p>
+            </div>
+
+            <button type="submit" class="w-full py-5 bg-yellow-600 text-black font-black rounded-2xl uppercase hover:bg-yellow-500 transition shadow-lg shadow-yellow-600/20">
+                Firma e Invia Contratto
+            </button>
+        </form>
+    </div>
+</body>
+</html>
