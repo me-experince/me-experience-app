@@ -1,25 +1,55 @@
-<body class="bg-white p-10 font-sans">
-    <div class="max-w-3xl mx-auto">
-        <header class="flex justify-between items-end border-b border-gray-100 pb-10 mb-10">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-X Logistics | Provider Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .executive-border { border-bottom: 1px solid #f2f2f2; }
+        .status-badge { letter-spacing: 0.2em; font-size: 0.6rem; font-weight: 700; }
+        .card-manifest { border: 1px solid #f2f2f2; transition: all 0.3s ease; }
+        .card-manifest:hover { border-color: #1a1a1a; background-color: #fafafa; }
+        .label-muted { letter-spacing: 0.2em; font-size: 0.6rem; color: #a1a1a1; text-transform: uppercase; }
+    </style>
+</head>
+<body class="bg-[#fcfcfc] min-h-screen">
+
+    <header class="bg-white px-8 py-10 executive-border sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex justify-between items-end">
             <div>
-                <h1 class="text-3xl serif italic italic">Logistica Fornitore</h1>
-                <p class="text-[10px] tracking-widest uppercase text-gray-400 mt-2 italic">Capitan Ciccio | Feluca Notturna</p>
+                <h1 class="text-4xl serif italic mb-2">Logistica Operativa</h1>
+                <p class="label-muted italic">Fornitore: <span class="text-black font-bold">Capitan Ciccio • Feluca Storica</span></p>
             </div>
-            <div class="text-[10px] font-bold tracking-widest uppercase text-green-600">Online</div>
-        </header>
-
-        <h2 class="text-xs tracking-[0.3em] font-bold uppercase mb-8">Ospiti in arrivo - 24 Marzo</h2>
-
-        <div class="space-y-6">
-            <div class="border border-gray-100 p-8 flex justify-between items-center group hover:border-black transition">
-                <div>
-                    <h3 class="text-xl serif italic mb-1">John Smith</h3>
-                    <p class="text-[10px] tracking-widest text-gray-400 uppercase italic">B&B Duomo • 2 Persone • Pick-up 20:30</p>
-                </div>
-                <button class="text-[10px] font-bold tracking-widest uppercase border border-gray-100 px-6 py-3 group-hover:bg-black group-hover:text-white transition">
-                    CONFERMA
-                </button>
+            <div class="text-right">
+                <span class="status-badge text-green-600 uppercase">● Sistema Online</span>
+                <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">24 Marzo 2026</p>
             </div>
         </div>
-    </div>
-</body>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-8">
+        
+        <div class="mb-12 flex justify-between items-center">
+            <h2 class="text-xs tracking-[0.4em] font-bold uppercase text-gray-500">Manifesto Ospiti del Giorno</h2>
+            <button onclick="window.print()" class="text-[9px] tracking-widest uppercase border-b border-black pb-1 hover:text-gray-400 hover:border-gray-400 transition">Stampa Lista</button>
+        </div>
+
+        <div class="space-y-6">
+            
+            <div class="card-manifest bg-white p-8 rounded-sm flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex-1">
+                    <div class="flex items-center gap-4 mb-3">
+                        <span class="bg-black text-white text-[9px] px-2 py-1 font-bold">SLOT 20:30</span>
+                        <h3 class="text-2xl serif italic tracking-tight">Mr. John Smith</h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <p class="label-muted mb-1">Ospiti</p>
+                            <p class="text-sm font-semibold">2 Adulti</p>
+                        </div>
+                        <div>
+                            <p class="label-muted mb-1">Struttura</p
