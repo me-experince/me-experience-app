@@ -77,3 +77,15 @@ app.get('/api/realtime-stats', async (req, res) => {
     }
 });
 app.listen(PORT, () => console.log(`ME-Xperience Engine running on port ${PORT}`));
+// Database simulato degli Slot (ID Esperienza + Data + Posti Occupati)
+const availability = [
+    { experienceId: 'mitonotte', date: '2026-03-24', slots: [{ time: '20:30', max: 12, booked: 12 }] },
+    { experienceId: 'mitonotte', date: '2026-03-25', slots: [{ time: '20:30', max: 12, booked: 8 }] }
+];
+
+// API per recuperare disponibilità nel calendario
+app.get('/api/availability/:experienceId', (req, res) => {
+    const { experienceId } = req.params;
+    const data = availability.filter(a => a.experienceId === experienceId);
+    res.json(data);
+});
