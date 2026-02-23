@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-X Services | Essential Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gold-gradient { background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans antialiased">
+
+    <header class="p-8 text-center">
+        <a href="/" class="text-2xl font-black italic tracking-tighter uppercase">ME-XPERIENCE</a>
+        <p class="text-[10px] text-yellow-500 font-bold uppercase tracking-widest mt-2">Premium Guest Services</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="glass rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+                <div class="h-40 bg-[url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800')] bg-cover rounded-2xl mb-4"></div>
+                <h3 class="text-xl font-bold uppercase italic">Private Black Van</h3>
+                <p class="text-slate-400 text-sm mt-2">Airport transfers or full-day disposal with professional English-speaking drivers.</p>
+            </div>
+            <a href="https://wa.me/39XXXXXXXXXX?text=I'd%20like%20to%20request%20a%20Private%20Transfer" class="mt-6 block text-center py-4 border border-yellow-500/50 text-yellow-500 rounded-xl font-bold uppercase text-xs hover:bg-yellow-500 hover:text-black transition">Request Quote</a>
+        </div>
+
+        <div class="glass rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+                <div class="h-40 bg-[url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800')] bg-cover rounded-2xl mb-4"></div>
+                <h3 class="text-xl font-bold uppercase italic">Table & Beach Club</h3>
+                <p class="text-slate-400 text-sm mt-2">Priority booking at the most exclusive restaurants and beach clubs in Messina and Taormina.</p>
+            </div>
+            <a href="https://wa.me/39XXXXXXXXXX?text=I%20need%20a%20restaurant%20reservation" class="mt-6 block text-center py-4 border border-yellow-500/50 text-yellow-500 rounded-xl font-bold uppercase text-xs hover:bg-yellow-500 hover:text-black transition">Book via Concierge</a>
+        </div>
+
+    </main>
+
+    <footer class="p-10 text-center">
+        <a href="/" class="text-slate-500 text-xs uppercase tracking-widest border-b border-slate-800 pb-1">Back to Experiences</a>
+    </footer>
+
+</body>
+</html>
