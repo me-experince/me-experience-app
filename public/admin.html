@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Executive | God Mode Dashboard</title>
+    <title>ME-X Executive | Master Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
@@ -25,7 +25,7 @@
     <aside class="w-64 bg-white border-r border-gray-100 p-8 flex flex-col gap-10 sticky top-0 h-screen z-50">
         <div>
             <h1 class="text-xl tracking-[0.3em] font-light uppercase serif text-black">ME-X Master</h1>
-            <p class="text-[8px] text-gray-400 tracking-[0.2em] mt-1 font-bold">EXECUTIVE CONTROL</p>
+            <p class="text-[8px] text-gray-400 tracking-[0.2em] mt-1 font-bold italic">Executive Control</p>
         </div>
         <nav class="flex flex-col gap-6">
             <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link pl-4 active uppercase text-left">Overview</button>
@@ -39,18 +39,18 @@
         
         <section id="overview" class="content-section">
             <h2 class="text-4xl serif italic mb-10">Stato Globale</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 italic">
                 <div class="executive-card p-10 border-l-4 border-l-black shadow-sm">
                     <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Volume Lordo</p>
-                    <h3 class="text-3xl serif italic" id="fin-gross">€ 14.500</h3>
+                    <h3 class="text-3xl serif" id="fin-gross">€ 14.500</h3>
                 </div>
                 <div class="executive-card p-10 border-l-4 border-l-amber-600 shadow-sm">
                     <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Margine Netto</p>
-                    <h3 class="text-3xl serif italic">€ 2.175</h3>
+                    <h3 class="text-3xl serif">€ 2.175</h3>
                 </div>
                 <div class="executive-card p-10 border-l-4 border-l-blue-400 shadow-sm">
                     <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Prenotazioni Attive</p>
-                    <h3 class="text-3xl serif italic" id="stat-bookings">42</h3>
+                    <h3 class="text-3xl serif" id="stat-bookings">42</h3>
                 </div>
             </div>
         </section>
@@ -58,216 +58,132 @@
         <section id="calendar" class="content-section hidden">
             <div class="flex justify-between items-end mb-10">
                 <h2 class="text-4xl serif italic">Master Calendar</h2>
-                <div class="text-[10px] uppercase font-bold text-amber-600 bg-amber-50 px-4 py-2 rounded-full tracking-widest">
-                    Live Sync: Attivo
-                </div>
+                <div class="text-[10px] uppercase font-bold text-amber-600 bg-amber-50 px-4 py-2 rounded-full tracking-widest">Live Sync: Attivo</div>
             </div>
-            
             <div class="executive-card overflow-hidden shadow-sm border border-gray-100">
                 <div class="grid grid-cols-7 bg-gray-50 p-6 text-[10px] font-bold uppercase tracking-widest border-b border-gray-100">
                     <div>Lun</div><div>Mar</div><div>Mer</div><div>Gio</div><div>Ven</div><div>Sab</div><div>Dom</div>
                 </div>
-                <div id="calendar-grid" class="grid grid-cols-7 italic">
-                    </div>
+                <div id="calendar-grid" class="grid grid-cols-7 italic"></div>
             </div>
         </section>
 
         <section id="catalogo" class="content-section hidden">
-            <h2 class="text-4xl serif italic mb-10">Gestione Catalogo</h2>
+            <h2 class="text-4xl serif italic mb-10">Product & Catalog Management</h2>
             
-            <div class="executive-card p-12 shadow-xl mb-12 border border-amber-100">
-                <h3 class="text-[10px] uppercase font-bold tracking-[0.3em] mb-10 text-amber-600">Inserimento Nuovo Fornitore / Esperienza</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 italic">
+                <div class="lg:col-span-1 executive-card p-10 bg-white border-t-4 border-amber-600 shadow-xl">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-10">Configura Nuovo Prodotto</h3>
                     <div class="space-y-6">
                         <div>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase mb-1">Nome Servizio</p>
-                            <input type="text" id="p-name" placeholder="es. TOUR FELUCA EXCLUSIVE">
-                        </div>
-                        <div>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase mb-1">Prezzo al Pubblico (€)</p>
-                            <input type="number" id="p-price" placeholder="es. 120">
-                        </div>
-                        <div>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase mb-1">Categoria</p>
-                            <select id="p-cat">
+                            <p class="text-[8px] text-gray-400 uppercase font-bold mb-1">Tipologia</p>
+                            <select id="p-type" class="uppercase text-[10px]">
                                 <option value="attivita">ATTIVITÀ (ESPERIENZA)</option>
-                                <option value="servizi">SERVIZIO (LOGISTICA/CONCIERGE)</option>
+                                <option value="servizio">SERVIZIO (LOGISTICA/CONCIERGE)</option>
                             </select>
                         </div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase mb-1">URL Immagine Copertina</p>
-                            <input type="text" id="p-img" placeholder="https://images.unsplash.com/...">
+                        <input type="text" id="p-name" placeholder="NOME PRODOTTO" class="uppercase text-[10px]">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="number" id="p-price" placeholder="PREZZO (€)" class="text-[10px]">
+                            <input type="text" id="p-provider" placeholder="FORNITORE" class="text-[10px]">
                         </div>
-                        <div>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase mb-1">Descrizione Emozionale</p>
-                            <textarea id="p-desc" class="h-28" placeholder="DESCRIZIONE PER IL CLIENTE..."></textarea>
-                        </div>
+                        <input type="text" id="p-img" placeholder="URL IMMAGINE COPERTINA" class="text-[10px]">
+                        <textarea id="p-desc" placeholder="DESCRIZIONE EMOZIONALE" class="text-[10px] h-24"></textarea>
+                        
+                        <button onclick="publishProduct()" id="saveBtn" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-amber-600 transition shadow-lg">
+                            Pubblica su ME-X
+                        </button>
                     </div>
                 </div>
 
-                <div class="mt-12 flex justify-between items-center">
-                    <p class="text-[9px] text-gray-400 italic">Il caricamento aggiornerà istantaneamente la vetrina pubblica e il sistema di booking.</p>
-                    <button onclick="saveProvider()" id="saveBtn" class="px-12 py-5 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-amber-600 transition shadow-lg active:scale-95">
-                        Pubblica su ME-Xperience
-                    </button>
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-[10px] font-bold uppercase tracking-widest">Prodotti nel Catalogo Live</span>
+                        <span class="text-[10px] text-gray-300 font-bold uppercase italic">Sync: Global</span>
+                    </div>
+                    <div id="product-list-container" class="space-y-4">
+                        <p class="text-[10px] text-gray-400 italic">Nessun prodotto personalizzato caricato.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="partners" class="content-section hidden">
-            <h2 class="text-4xl serif italic mb-10 text-slate-900">Anagrafica Partners</h2>
-            <div id="partners-list" class="executive-card p-10">
-                <p class="text-xs text-gray-400 italic">Caricamento database partner...</p>
+            <h2 class="text-4xl serif italic mb-10">Anagrafica Partners</h2>
+            <div id="partners-list" class="executive-card p-10 italic">
+                <p class="text-xs text-gray-400">Database partner attivo.</p>
             </div>
         </section>
-
-      <section id="catalogo" class="content-section hidden">
-    <h2 class="text-4xl serif italic mb-10">Product Management</h2>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 italic">
-        <div class="lg:col-span-1 executive-card p-10 bg-white border-t-4 border-amber-600">
-            <h3 class="text-[10px] font-bold uppercase tracking-widest mb-10">Configura Nuovo Prodotto</h3>
-            <div class="space-y-8">
-                <div>
-                    <p class="text-[8px] text-gray-400 uppercase font-bold mb-2">Tipologia</p>
-                    <select id="p-type" class="w-full border-b border-gray-100 py-2 outline-none uppercase text-[10px]">
-                        <option value="attivita">ATTIVITÀ (Ha una data/ora fissa)</option>
-                        <option value="servizio">SERVIZIO (Prezzo base o km)</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="text" id="p-name" placeholder="NOME PRODOTTO" class="w-full border-b border-gray-100 py-2 outline-none uppercase text-[10px]">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="p-price" placeholder="PREZZO (€)" class="border-b border-gray-100 py-2 outline-none text-[10px]">
-                    <input type="text" id="p-provider" placeholder="FORNITORE" class="border-b border-gray-100 py-2 outline-none text-[10px]">
-                </div>
-                <div>
-                    <textarea id="p-desc" placeholder="DESCRIZIONE EMOZIONALE" class="w-full border-b border-gray-100 py-2 outline-none text-[10px] h-20"></textarea>
-                </div>
-                <button onclick="publishProduct()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-amber-600 transition">Pubblica Prodotto</button>
-            </div>
-        </div>
-
-        <div class="lg:col-span-2 space-y-4">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-[10px] font-bold uppercase tracking-widest">Prodotti nel Catalogo</span>
-                <span class="text-[10px] text-gray-300">Sync: Global</span>
-            </div>
-            <div id="product-list-container" class="space-y-4 font-bold italic">
-                </div>
-        </div>
-    </div>
-</section>
-
-<script>
-// Logica per gestire i prodotti nell'admin
-async function publishProduct() {
-    const product = {
-        type: document.getElementById('p-type').value,
-        name: document.getElementById('p-name').value,
-        price: document.getElementById('p-price').value,
-        provider: document.getElementById('p-provider').value,
-        desc: document.getElementById('p-desc').value
-    };
-
-    if(!product.name || !product.price) return alert("Dati mancanti");
-
-    // Invio al server (Logica fetch... come già visto)
-    alert(`Prodotto ${product.name} aggiunto alla collezione ${product.type}.`);
-}
-</script>  
     </main>
 
     <script>
-        // 1. NAVIGAZIONE FRA SEZIONI
+        // 1. NAVIGAZIONE
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            
             document.querySelectorAll('.sidebar-link').forEach(l => {
                 l.classList.remove('active', 'text-black');
                 l.classList.add('text-gray-400');
             });
             document.getElementById('nav-' + id).classList.add('active', 'text-black');
-            
             if(id === 'calendar') renderMasterCalendar();
         }
 
-        // 2. GENERAZIONE CALENDARIO MASTER (GOD MODE)
+        // 2. CALENDARIO
         function renderMasterCalendar() {
             const grid = document.getElementById('calendar-grid');
             grid.innerHTML = '';
-            // Genera 31 giorni per il mese corrente
             for(let i = 1; i <= 31; i++) {
                 const day = document.createElement('div');
                 day.className = 'calendar-day hover:bg-gray-50 transition cursor-pointer';
-                
-                // Logica pallini: Nero = Esperienza, Ambra = Transfer
-                let dots = '';
-                if(i % 3 === 0) dots += '<span class="booking-dot bg-black"></span>';
-                if(i % 5 === 0) dots += '<span class="booking-dot bg-amber-500"></span>';
-                
-                day.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <strong class="text-gray-300 font-light">${i}</strong>
-                        <div class="flex">${dots}</div>
-                    </div>
-                `;
+                let dots = i % 3 === 0 ? '<span class="booking-dot bg-black"></span>' : '';
+                dots += i % 5 === 0 ? '<span class="booking-dot bg-amber-500"></span>' : '';
+                day.innerHTML = `<div class="flex justify-between"><strong>${i}</strong><div class="flex">${dots}</div></div>`;
                 grid.appendChild(day);
             }
         }
 
-        // 3. SALVATAGGIO DINAMICO FORNITORE/SERVIZIO
-        async function saveProvider() {
+        // 3. LOGICA PUBBLICAZIONE (CONSOLIDATA)
+        async function publishProduct() {
             const btn = document.getElementById('saveBtn');
-            const data = {
+            const product = {
+                type: document.getElementById('p-type').value,
                 name: document.getElementById('p-name').value,
                 price: document.getElementById('p-price').value,
-                category: document.getElementById('p-cat').value,
+                provider: document.getElementById('p-provider').value,
                 imageUrl: document.getElementById('p-img').value,
-                description: document.getElementById('p-desc').value,
+                desc: document.getElementById('p-desc').value,
                 timestamp: new Date().toISOString()
             };
 
-            // Validazione Base
-            if(!data.name || !data.price) {
-                alert("Nome e Prezzo sono obbligatori per la pubblicazione.");
+            if(!product.name || !product.price) {
+                alert("Nome e Prezzo sono obbligatori.");
                 return;
             }
 
             btn.disabled = true;
-            btn.innerText = "SINCRONIZZAZIONE...";
+            btn.innerText = "PUBBLICAZIONE...";
 
             try {
                 const res = await fetch('/api/admin/add-provider', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(product)
                 });
                 
                 if(res.ok) {
-                    alert("Ecosistema Aggiornato: " + data.name + " è ora disponibile per la vendita.");
-                    // Pulisci form
-                    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
-                    showSection('overview');
+                    alert(`Ecosistema Aggiornato: ${product.name} è ora Live.`);
+                    location.reload(); 
                 }
             } catch (err) {
-                alert("Errore di connessione. I dati non sono stati pubblicati.");
+                alert("Errore di connessione.");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "PUBBLICA SU ME-XPERIENCE";
+                btn.innerText = "PUBBLICA SU ME-X";
             }
         }
 
-        // Inizializzazione
-        window.onload = () => {
-            renderMasterCalendar();
-        };
+        window.onload = renderMasterCalendar;
     </script>
 </body>
 </html>
