@@ -99,3 +99,6 @@ app.get('/services', (req, res) => {
 app.get('/partner-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/partner.html'));
 });
+app.get('/provider-dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/provider.html'));
+});
