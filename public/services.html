@@ -3,65 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Services | Essential Luxury</title>
+    <title>ME-X | Catalogo Attività & Servizi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .glass-light { background: rgba(255, 255, 255, 0.8); border: 1px solid #f2f2f2; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a1a1a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
-        .btn-dark { background: #1a1a1a; color: white; letter-spacing: 0.2em; font-size: 0.7rem; transition: all 0.3s; }
-        .btn-dark:hover { background: #333; transform: translateY(-2px); }
+        .filter-btn { @apply px-6 py-2 text-[10px] font-bold uppercase tracking-widest border border-gray-100 transition-all; }
+        .filter-btn.active { @apply border-black bg-black text-white; }
+        .card-luxury { @apply border border-gray-50 p-8 hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500 bg-white; }
+        .badge { @apply text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full mb-4 inline-block; }
     </style>
 </head>
-<body>
+<body class="bg-white">
 
-    <nav class="flex justify-center gap-12 py-8 bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-50">
-        <a href="/" class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-black transition">Experiences</a>
-        <a href="/services" class="text-[10px] font-bold uppercase tracking-[0.3em] text-black border-b border-black pb-1">Guest Services</a>
+    <nav class="flex justify-between items-center px-8 py-6 border-b border-gray-50 sticky top-0 bg-white/90 backdrop-blur-md z-50">
+        <a href="/" class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</a>
+        <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="/" class="hover:text-black transition">Home</a>
+            <a href="/master-admin-dashboard" class="text-black">Master Admin</a>
+        </div>
     </nav>
 
-    <header class="py-16 text-center">
-        <h1 class="text-4xl font-light italic serif tracking-tight">Servizi Esclusivi</h1>
-        <p class="text-[10px] text-gray-400 uppercase tracking-[0.4em] mt-4 font-light">L'eccellenza al vostro servizio</p>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 pb-24">
+    <main class="max-w-7xl mx-auto px-6 py-20">
         
-        <div class="glass-light rounded-sm p-10 flex flex-col justify-between">
-            <div>
-                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800" class="w-full h-64 object-cover mb-8 grayscale-[0.3]">
-                <h3 class="text-3xl serif italic mb-4">Luxury Transfer</h3>
-                <p class="text-sm text-gray-500 font-light leading-relaxed mb-8 italic">Conducenti privati e vetture premium per ogni vostra destinazione in Sicilia.</p>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3 block">Destinazione</label>
-                        <select id="transport-route" class="w-full border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-black transition bg-transparent">
-                            <option value="Airport Catania (CTA)">Aeroporto Catania (CTA)</option>
-                            <option value="Messina Central Station">Stazione di Messina</option>
-                            <option value="Taormina Center/Beach">Taormina</option>
-                            <option value="Milazzo Hydrofoils">Milazzo - Porto Aliscafi</option>
-                        </select>
-                    </div>
+        <header class="mb-20">
+            <h1 class="text-5xl serif italic mb-6">Experience & Concierge</h1>
+            <p class="text-sm text-gray-400 max-w-xl font-light leading-relaxed uppercase tracking-widest">
+                Gestione centralizzata delle attività esperienziali e dei servizi executive per i partner ME-X.
+            </p>
+        </header>
+
+        <div class="flex gap-4 mb-12 border-b border-gray-50 pb-8">
+            <button onclick="filterItems('all')" class="filter-btn active" id="btn-all">Tutto</button>
+            <button onclick="filterItems('attivita')" class="filter-btn" id="btn-attivita">Attività (Esperienze)</button>
+            <button onclick="filterItems('servizi')" class="filter-btn" id="btn-servizi">Servizi (Logistica)</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="catalog-grid">
+            
+            <div class="card-luxury item-attivita">
+                <span class="badge bg-amber-50 text-amber-700">Attività</span>
+                <h3 class="serif text-2xl italic mb-4">La Notte del Mito</h3>
+                <p class="text-[11px] text-gray-500 leading-relaxed mb-8 font-light uppercase tracking-tighter">
+                    Navigazione notturna su Feluca storica con degustazione.
+                </p>
+                <div class="flex justify-between items-end">
+                    <span class="text-xl font-light">€ 120.00</span>
+                    <button class="text-[9px] font-black underline uppercase tracking-widest">Gestisci Slot</button>
                 </div>
             </div>
 
-            <button onclick="requestTransport()" class="btn-dark w-full py-5 mt-10 uppercase font-bold">Richiedi Disponibilità</button>
-        </div>
-
-        <div class="glass-light rounded-sm p-10 flex flex-col justify-between">
-            <div>
-                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800" class="w-full h-64 object-cover mb-8 grayscale-[0.3]">
-                <h3 class="text-3xl serif italic mb-4">Personal Concierge</h3>
-                <p class="text-sm text-gray-500 font-light leading-relaxed mb-8 italic">Accesso prioritario ai migliori Beach Club e ristoranti di Messina e Taormina.</p>
-                
-                <ul class="space-y-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                    <li>✦ Prenotazioni Beach Club</li>
-                    <li>✦ Tavoli nei Ristoranti Stellati</li>
-                    <li>✦ Personal Shopping</li>
-                </ul>
+            <div class="card-luxury item-servizi">
+                <span class="badge bg-blue-50 text-blue-700">Servizio</span>
+                <h3 class="serif text-2xl italic mb-4">Transfer Black Label</h3>
+                <p class="text-[11px] text-gray-500 leading-relaxed mb-8 font-light uppercase tracking-tighter">
+                    Servizio chauffeur privato da/per Aeroporto o Porto.
+                </p>
+                <div class="flex justify-between items-end">
+                    <span class="text-xl font-light">€ 85.00</span>
+                    <button class="text-[9px] font-black underline uppercase tracking-widest">Configura</button>
+                </div>
             </div>
 
-            <a href
+        </div>
+    </main>
+
+    <script>
+        // Funzione di filtraggio dinamico
+        function filterItems(category) {
+            const items = document.querySelectorAll('.card-luxury');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // Gestione pulsanti
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + category).classList.add('active');
+
+            // Gestione visibilità
+            items.forEach(item => {
+                if (category === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    if (item.classList.contains('item-' + category)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
