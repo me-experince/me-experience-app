@@ -180,23 +180,52 @@
         </div>
     </div>
 
-    <script>
-        function showSection(id) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-link').forEach(l => {
-                l.classList.remove('active', 'text-black');
-                l.classList.add('text-gray-400');
-            });
-            document.getElementById(id).classList.remove('hidden');
-            const navBtn = document.getElementById('nav-' + id);
-            navBtn.classList.add('active', 'text-black');
-            navBtn.classList.remove('text-gray-400');
-        }
+    // Carica i dati all'avvio
+document.addEventListener('DOMContentLoaded', loadAdminData);
 
-        function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.toggle('hidden');
-        }
-    </script>
+async function loadAdminData() {
+    const res = await fetch('/api/admin/data');
+    const d = await res.json();
+    renderPartners(d.partners);
+    renderServices(d.services);
+}
+
+// Renderizza i Partner nella tabella
+function renderPartners(partners) {
+    const tableBody = document.querySelector('#partners tbody');
+    tableBody.innerHTML = partners.map(p => `
+        <tr class="border-b border-gray-50">
+            <td class="p-6 font-bold text-black uppercase">${p.name}</td>
+            <td class="italic capitalize">${p.type}</td>
+            <td><button class="text-yellow-600 underline">Apri Slot</button></td>
+            <td class="font-bold">€ ${p.sales}</td>
+            <td class="p-6 text-right">
+                <button class="hover:text-black">Modifica</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// Funzione per salvare un Partner dal Modale
+async function savePartner() {
+    const partnerData = {
+        name: document.getElementById('p-name').value,
+        type: document.getElementById('p-type').value,
+        commission: document.getElementById('p-comm').value
+    };
+
+    const res = await fetch('/api/partners/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(partnerData)
+    });
+
+    if (res.ok) {
+        toggleModal('partner-modal');
+        loadAdminData(); // Ricarica la lista aggiornata
+    }
+}
+
+// ... Stessa logica per i Servizi ...
 </body>
 </html>
