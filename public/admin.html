@@ -14,8 +14,9 @@
         .executive-card { background: white; border: 1px solid #f2f2f2; transition: all 0.3s ease; }
         .executive-card:hover { border-color: #1a1a1a; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
         .stat-label { letter-spacing: 0.2em; font-size: 0.6rem; color: #8c8c8c; text-transform: uppercase; }
-        input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; transition: border-color 0.3s; }
+        input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; transition: border-color 0.3s; width: 100%; }
         input:focus { border-color: #1a1a1a; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -25,13 +26,10 @@
             <h1 class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</h1>
             <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1 italic">Executive Admin</p>
         </div>
-
         <nav class="flex flex-col gap-6">
             <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link text-left pl-4 active uppercase">Overview</button>
-            <button onclick="showSection('analytics')" id="nav-analytics" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Statistiche</button>
             <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Anagrafica Partner</button>
             <button onclick="showSection('services')" id="nav-services" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Esperienze & Servizi</button>
-            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Finanza Stripe</button>
         </nav>
     </aside>
 
@@ -39,87 +37,48 @@
 
         <section id="overview" class="content-section">
             <h2 class="text-4xl serif italic mb-10">Executive Overview</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="executive-card p-6 text-center">
-                    <p class="stat-label mb-2">Fatturato Mese</p>
-                    <p class="text-2xl serif">€ 12.450</p>
-                </div>
-                <div class="executive-card p-6 text-center border-l-4 border-l-yellow-500">
-                    <p class="stat-label mb-2">Best Partner</p>
-                    <p class="text-xs font-bold italic uppercase">Four Seasons Taormina</p>
+                    <p class="stat-label mb-2">Fatturato Lordo</p>
+                    <p class="text-2xl serif" id="stat-revenue">€ 0</p>
                 </div>
                 <div class="executive-card p-6 text-center">
-                    <p class="stat-label mb-2">Servizio Top</p>
-                    <p class="text-xs font-bold italic uppercase">Alba sullo Stretto</p>
+                    <p class="stat-label mb-2">Partner Attivi</p>
+                    <p class="text-2xl serif" id="stat-partners">0</p>
                 </div>
                 <div class="executive-card p-6 text-center">
-                    <p class="stat-label mb-2">Provvigioni Partner</p>
-                    <p class="text-2xl serif italic">€ 1.860</p>
+                    <p class="stat-label mb-2">Servizi Totali</p>
+                    <p class="text-2xl serif" id="stat-services">0</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="executive-card p-8">
-                    <h3 class="text-xs tracking-widest uppercase font-bold mb-6">Vendite per Struttura</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="italic font-medium">B&B Duomo Messina</span>
-                            <span class="font-bold">€ 4.200 (34%)</span>
-                        </div>
-                        <div class="w-full bg-gray-100 h-1"><div class="bg-black h-1" style="width: 34%"></div></div>
-                        
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="italic font-medium">Villa Sant'Andrea</span>
-                            <span class="font-bold">€ 3.100 (25%)</span>
-                        </div>
-                        <div class="w-full bg-gray-100 h-1"><div class="bg-black h-1" style="width: 25%"></div></div>
+            <div class="executive-card p-8">
+                <h3 class="text-xs tracking-widest uppercase font-bold mb-6 italic">Performance Top Partner</h3>
+                <div id="partner-stats-container" class="space-y-4">
                     </div>
-                </div>
-                
-                <div class="executive-card p-8">
-                    <h3 class="text-xs tracking-widest uppercase font-bold mb-6">Ranking Servizi</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center text-xs italic">
-                            <span>1. Notte del Mito (Felucca)</span>
-                            <span class="text-green-600">+12%</span>
-                        </div>
-                        <div class="flex justify-between items-center text-xs italic border-t border-gray-50 pt-2">
-                            <span>2. Transfer Aeroporto CTA</span>
-                            <span class="text-gray-400">Stabile</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
         <section id="partners" class="content-section hidden">
             <div class="flex justify-between items-end mb-10">
                 <h2 class="text-4xl serif italic">Anagrafica Strutture</h2>
-                <button onclick="toggleModal('partner-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
+                <button onclick="toggleModal('partner-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[10px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
                     + Aggiungi Struttura
                 </button>
             </div>
-
-            <div class="executive-card">
+            <div class="executive-card overflow-hidden">
                 <table class="w-full text-left text-[10px] tracking-widest uppercase">
                     <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 italic">
                         <tr>
-                            <th class="p-6">Nome Struttura</th>
-                            <th>Tipologia</th>
-                            <th>Calendario Slot</th>
+                            <th class="p-6">Nome</th>
+                            <th>Tipo</th>
+                            <th>Comm.</th>
                             <th>Vendite</th>
                             <th class="p-6 text-right">Azioni</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-600 italic">
-                        <tr class="border-b border-gray-50">
-                            <td class="p-6 font-bold text-black uppercase">B&B Duomo</td>
-                            <td>Bed & Breakfast</td>
-                            <td><button class="text-yellow-600 underline">Apri Slot</button></td>
-                            <td class="font-bold">€ 2.450</td>
-                            <td class="p-6 text-right"><button class="hover:text-black">Modifica</button></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="partners-table-body" class="text-gray-600">
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -127,105 +86,27 @@
         <section id="services" class="content-section hidden">
             <div class="flex justify-between items-end mb-10">
                 <h2 class="text-4xl serif italic">Esperienze & Servizi</h2>
-                <button onclick="toggleModal('service-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
+                <button onclick="toggleModal('service-modal')" class="bg-[#1a1a1a] text-white px-8 py-4 text-[10px] font-bold tracking-widest uppercase hover:bg-gray-800 transition">
                     + Crea Nuovo Prodotto
                 </button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="executive-card p-6 flex gap-4">
-                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=200" class="w-20 h-20 object-cover grayscale-[0.5]">
-                    <div>
-                        <h4 class="serif italic text-xl">Notte del Mito</h4>
-                        <p class="stat-label">Esperienza • € 120</p>
-                        <p class="text-[9px] mt-2 text-green-600 font-bold uppercase tracking-widest">Attivo</p>
-                    </div>
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 </div>
-            </div>
         </section>
 
     </main>
 
     <div id="partner-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-lg w-full p-10 shadow-2xl relative">
-            <button onclick="toggleModal('partner-modal')" class="absolute top-6 right-6 text-gray-400">✕</button>
-            <h3 class="text-2xl serif italic mb-8">Nuova Struttura Ricettiva</h3>
+        <div class="bg-white max-w-lg w-full p-10 shadow-2xl">
+            <h3 class="text-2xl serif italic mb-8">Nuova Struttura</h3>
             <div class="space-y-6">
-                <input type="text" placeholder="NOME STRUTTURA" class="w-full">
-                <select class="w-full">
-                    <option value="">TIPOLOGIA</option>
-                    <option value="hotel">Hotel di Lusso</option>
-                    <option value="bnb">Bed & Breakfast</option>
-                    <option value="villa">Villa / Casa Vacanze</option>
-                    <option value="resort">Resort</option>
+                <input type="text" id="p-name" placeholder="NOME STRUTTURA">
+                <select id="p-type">
+                    <option value="hotel">Luxury Hotel</option>
+                    <option value="bnb">B&B</option>
+                    <option value="villa">Villa</option>
                 </select>
-                <input type="number" placeholder="COMMISSIONE %" class="w-full">
-                <button class="w-full bg-black text-white py-4 text-[10px] font-bold tracking-widest uppercase">Salva Anagrafica</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="service-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-lg w-full p-10 shadow-2xl relative">
-            <button onclick="toggleModal('service-modal')" class="absolute top-6 right-6 text-gray-400">✕</button>
-            <h3 class="text-2xl serif italic mb-8">Nuovo Prodotto / Servizio</h3>
-            <div class="space-y-6">
-                <input type="text" placeholder="NOME ESPERIENZA O SERVIZIO" class="w-full">
-                <select class="w-full">
-                    <option value="exp">ESPERIENZA (Tour, Barca, etc)</option>
-                    <option value="serv">SERVIZIO (Transfer, Concierge)</option>
-                </select>
-                <input type="number" placeholder="PREZZO AL PUBBLICO €" class="w-full">
-                <button class="w-full bg-black text-white py-4 text-[10px] font-bold tracking-widest uppercase">Crea Prodotto</button>
-            </div>
-        </div>
-    </div>
-
-    // Carica i dati all'avvio
-document.addEventListener('DOMContentLoaded', loadAdminData);
-
-async function loadAdminData() {
-    const res = await fetch('/api/admin/data');
-    const d = await res.json();
-    renderPartners(d.partners);
-    renderServices(d.services);
-}
-
-// Renderizza i Partner nella tabella
-function renderPartners(partners) {
-    const tableBody = document.querySelector('#partners tbody');
-    tableBody.innerHTML = partners.map(p => `
-        <tr class="border-b border-gray-50">
-            <td class="p-6 font-bold text-black uppercase">${p.name}</td>
-            <td class="italic capitalize">${p.type}</td>
-            <td><button class="text-yellow-600 underline">Apri Slot</button></td>
-            <td class="font-bold">€ ${p.sales}</td>
-            <td class="p-6 text-right">
-                <button class="hover:text-black">Modifica</button>
-            </td>
-        </tr>
-    `).join('');
-}
-
-// Funzione per salvare un Partner dal Modale
-async function savePartner() {
-    const partnerData = {
-        name: document.getElementById('p-name').value,
-        type: document.getElementById('p-type').value,
-        commission: document.getElementById('p-comm').value
-    };
-
-    const res = await fetch('/api/partners/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(partnerData)
-    });
-
-    if (res.ok) {
-        toggleModal('partner-modal');
-        loadAdminData(); // Ricarica la lista aggiornata
-    }
-}
-
-// ... Stessa logica per i Servizi ...
-</body>
-</html>
+                <input type="number" id="p-comm" placeholder="COMMISSIONE %">
+                <div class="flex gap-4">
+                    <button onclick="submitPartner()" class="flex-1 bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Salva</button>
+                    <button onclick="toggleModal('partner-modal')" class="flex-1 border border-gray-200 py-4 text-[10px] font-bold uppercase tracking-widest">Annulla</button>
