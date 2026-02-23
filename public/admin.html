@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Master Control</title>
+    <title>ME-X Executive | Master Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
@@ -12,8 +12,10 @@
         .sidebar-link { transition: all 0.3s; letter-spacing: 0.15em; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
         .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; }
         .executive-card { background: white; border: 1px solid #f2f2f2; transition: all 0.3s ease; }
+        .executive-card:hover { border-color: #1a1a1a; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
         .stat-label { letter-spacing: 0.2em; font-size: 0.6rem; color: #8c8c8c; text-transform: uppercase; font-weight: 600; }
         input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; width: 100%; }
+        input:focus { border-color: #1a1a1a; }
         .hidden { display: none; }
     </style>
 </head>
@@ -35,14 +37,38 @@
 
         <section id="overview" class="content-section">
             <h2 class="text-4xl serif italic mb-10">Stato Globale</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="executive-card p-8"><p class="stat-label mb-2">Fatturato</p><p class="text-3xl serif italic" id="stat-revenue">€ 0</p></div>
-                <div class="executive-card p-8"><p class="stat-label mb-2">Strutture</p><p class="text-3xl serif italic text-gray-400" id="stat-partners">0</p></div>
-                <div class="executive-card p-8"><p class="stat-label mb-2">Vendite</p><p class="text-3xl serif italic text-gray-400" id="stat-bookings">0</p></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="executive-card p-6 border-l-4 border-l-black">
+                    <p class="stat-label mb-2">Volume Lordo</p>
+                    <h3 class="text-2xl serif italic" id="fin-gross">€ 0</h3>
+                </div>
+                <div class="executive-card p-6 border-l-4 border-l-amber-600">
+                    <p class="stat-label mb-2">Margine ME-X (Netto)</p>
+                    <h3 class="text-2xl serif italic" id="fin-mex">€ 0</h3>
+                </div>
+                <div class="executive-card p-6 border-l-4 border-l-blue-400">
+                    <p class="stat-label mb-2">IVA 22% Maturata</p>
+                    <h3 class="text-2xl serif italic" id="fin-iva">€ 0</h3>
+                </div>
+                <div class="executive-card p-6 border-l-4 border-l-green-500">
+                    <p class="stat-label mb-2">Debito Fornitori</p>
+                    <h3 class="text-2xl serif italic" id="fin-providers">€ 0</h3>
+                </div>
             </div>
-            <div class="executive-card p-10">
-                <h3 class="stat-label mb-8 italic">Ranking Performance Strutture</h3>
-                <div id="ranking-list" class="space-y-6"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="executive-card p-10">
+                    <h3 class="stat-label mb-8 italic">Ranking Performance Strutture</h3>
+                    <div id="ranking-list" class="space-y-6"></div>
+                </div>
+                <div class="executive-card p-10">
+                    <h3 class="stat-label mb-8 italic">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between border-b pb-2"><span class="text-[10px] uppercase">Partner Totali</span><span id="stat-partners" class="font-bold">0</span></div>
+                        <div class="flex justify-between border-b pb-2"><span class="text-[10px] uppercase">Prenotazioni</span><span id="stat-bookings" class="font-bold">0</span></div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -54,7 +80,7 @@
             <div class="executive-card">
                 <table class="w-full text-left text-[10px] tracking-widest uppercase">
                     <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 italic font-bold">
-                        <tr><th class="p-6">Struttura</th><th>Tipo</th><th>Vendite</th><th>Calendario</th><th class="p-6 text-right">Link</th></tr>
+                        <tr><th class="p-6">Struttura</th><th>Tipo</th><th>Comm.</th><th>Vendite</th><th>Calendario</th><th class="p-6 text-right">Link</th></tr>
                     </thead>
                     <tbody id="partners-table-body" class="text-gray-600"></tbody>
                 </table>
@@ -89,27 +115,27 @@
     </div>
 
     <div id="partner-modal" class="hidden fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-md w-full p-10">
+        <div class="bg-white max-w-md w-full p-10 shadow-2xl">
             <h3 class="serif italic text-2xl mb-8">Nuovo Partner</h3>
             <div class="space-y-6">
                 <input type="text" id="p-name" placeholder="NOME">
-                <select id="p-type"><option value="hotel">Hotel</option><option value="bnb">B&B</option><option value="villa">Villa</option></select>
+                <select id="p-type"><option value="hotel">Hotel</option><option value="bnb">B&B</option><option value="villa">Villa/Resort</option></select>
                 <input type="number" id="p-comm" placeholder="COMMISSIONE %">
-                <button onclick="submitPartner()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Salva</button>
-                <button onclick="toggleModal('partner-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400">Chiudi</button>
+                <button onclick="submitPartner()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Salva Partner</button>
+                <button onclick="toggleModal('partner-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400 mt-2">Chiudi</button>
             </div>
         </div>
     </div>
 
     <div id="service-modal" class="hidden fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-md w-full p-10">
+        <div class="bg-white max-w-md w-full p-10 shadow-2xl">
             <h3 class="serif italic text-2xl mb-8">Nuovo Servizio</h3>
             <div class="space-y-6">
                 <input type="text" id="s-name" placeholder="NOME">
                 <select id="s-type"><option value="exp">Esperienza</option><option value="serv">Servizio</option></select>
                 <input type="number" id="s-price" placeholder="PREZZO €">
-                <button onclick="submitService()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Salva</button>
-                <button onclick="toggleModal('service-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400">Chiudi</button>
+                <button onclick="submitService()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase">Crea</button>
+                <button onclick="toggleModal('service-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400 mt-2">Chiudi</button>
             </div>
         </div>
     </div>
@@ -118,84 +144,5 @@
         let activePartnerId = null;
 
         async function loadAdminData() {
-            const res = await fetch('/api/admin/data');
-            const d = await res.json();
-            
-            document.getElementById('stat-partners').innerText = d.partners.length;
-            document.getElementById('stat-bookings').innerText = d.bookings.length;
-            document.getElementById('stat-revenue').innerText = '€ ' + d.partners.reduce((s,p)=>s+p.sales,0).toLocaleString();
-
-            const pTable = document.getElementById('partners-table-body');
-            pTable.innerHTML = d.partners.map(p => `
-                <tr class="border-b border-gray-50">
-                    <td class="p-6 font-bold text-black italic">${p.name}</td>
-                    <td>${p.type}</td>
-                    <td class="font-bold">€ ${p.sales}</td>
-                    <td><button onclick="openCal('${p.id}', '${p.name}')" class="text-black border-b border-black">SLOT</button></td>
-                    <td class="p-6 text-right"><button onclick="copyLink('${p.id}')" class="text-yellow-600 font-bold">LINK</button></td>
-                </tr>
-            `).join('');
-
-            const sGrid = document.getElementById('services-grid');
-            sGrid.innerHTML = d.services.map(s => `
-                <div class="executive-card p-8 flex justify-between items-center bg-white shadow-sm">
-                    <div><h4 class="serif italic text-2xl">${s.name}</h4><p class="stat-label">€ ${s.price}</p></div>
-                    <span class="text-[9px] font-bold text-green-600 italic uppercase">Attivo</span>
-                </div>
-            `).join('');
-
-            const rList = document.getElementById('ranking-list');
-            rList.innerHTML = d.partners.sort((a,b)=>b.sales - a.sales).map(p => `
-                <div class="flex justify-between text-[10px] uppercase font-bold border-b border-gray-50 pb-2">
-                    <span class="italic font-light">${p.name}</span>
-                    <span>€ ${p.sales}</span>
-                </div>
-            `).join('');
-        }
-
-        async function submitPartner() {
-            const body = { name: document.getElementById('p-name').value, type: document.getElementById('p-type').value, commission: document.getElementById('p-comm').value };
-            await fetch('/api/partners/add', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
-            toggleModal('partner-modal'); loadAdminData();
-        }
-
-        async function submitService() {
-            const body = { name: document.getElementById('s-name').value, type: document.getElementById('s-type').value, price: document.getElementById('s-price').value };
-            await fetch('/api/services/add', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
-            toggleModal('service-modal'); loadAdminData();
-        }
-
-        async function openCal(id, name) {
-            activePartnerId = id;
-            document.getElementById('cal-title').innerText = name;
-            const res = await fetch('/api/admin/data');
-            const d = await res.json();
-            const bks = d.bookings.filter(b => b.partnerId === id);
-            document.getElementById('bookings-list').innerHTML = bks.map(b => `
-                <div class="border border-gray-100 p-4 text-[10px] uppercase font-bold italic">
-                    ${b.guestName} - ${b.date}
-                </div>
-            `).join('') || '<p class="text-xs italic text-gray-300">Nessun ospite.</p>';
-            toggleModal('calendar-modal');
-        }
-
-        async function addManual() {
-            const body = { partnerId: activePartnerId, date: document.getElementById('man-date').value, guestName: document.getElementById('man-guest').value, time: "20:30" };
-            await fetch('/api/bookings/add', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
-            toggleModal('calendar-modal'); loadAdminData();
-        }
-
-        function showSection(id) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active', 'text-black'));
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById('nav-' + id).classList.add('active', 'text-black');
-        }
-
-        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
-        function copyLink(id) { navigator.clipboard.writeText(`https://me-xperience.com/?ref=${id}`); alert("Link copiato!"); }
-
-        document.addEventListener('DOMContentLoaded', loadAdminData);
-    </script>
-</body>
-</html>
+            try {
+                const res = await fetch('/api/
