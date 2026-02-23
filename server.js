@@ -56,4 +56,24 @@ app.post('/create-checkout-session', async (req, res) => {
 
 // Avvio Server
 const PORT = process.env.PORT || 3000;
+// API per estrarre il fatturato REALE da Stripe
+app.get('/api/realtime-stats', async (req, res) => {
+    try {
+        // Recuperiamo i pagamenti riusciti (limitati agli ultimi 100 per velocità)
+        const payments = await stripe.paymentIntents.list({ limit: 100 });
+        
+        const totalRevenue = payments.data
+            .filter(p => p.status === 'succeeded')
+            .reduce((sum, p) => sum + (p.amount / 100), 0); // Convertiamo da centesimi a Euro
+
+        const bookingCount = payments.data.filter(p => p.status === 'succeeded').length;
+
+        res.json({
+            revenue: totalRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 }),
+            count: bookingCount
+        });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 app.listen(PORT, () => console.log(`ME-Xperience Engine running on port ${PORT}`));
