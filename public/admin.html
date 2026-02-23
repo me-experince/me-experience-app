@@ -3,248 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ME-X Executive | Master Control</title>
+    <title>ME-X Executive | God Mode Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fcfcfc; color: #1a1a1a; }
+        body { font-family: 'Montserrat', sans-serif; background: #fcfcfc; color: #1a1a1a; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .sidebar-link { transition: all 0.3s; letter-spacing: 0.15em; font-size: 0.65rem; font-weight: 600; cursor: pointer; border-left: 2px solid transparent; }
+        .sidebar-link { transition: 0.3s; font-size: 0.65rem; font-weight: 600; cursor: pointer; border-left: 2px solid transparent; }
         .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; }
-        .executive-card { background: white; border: 1px solid #f2f2f2; transition: all 0.3s ease; }
-        .executive-card:hover { border-color: #1a1a1a; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-        .stat-label { letter-spacing: 0.2em; font-size: 0.6rem; color: #8c8c8c; text-transform: uppercase; font-weight: 600; }
-        input, select { background: transparent; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 0; font-size: 0.8rem; outline: none; width: 100%; }
-        input:focus { border-color: #1a1a1a; }
         .hidden { display: none !important; }
-        .iban-font { font-family: 'Courier New', Courier, monospace; letter-spacing: 1px; }
+        .calendar-day { min-height: 80px; border: 1px solid #f0f0f0; padding: 10px; font-size: 10px; }
+        .booking-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 2px; }
     </style>
 </head>
 <body class="flex min-h-screen">
 
     <aside class="w-64 bg-white border-r border-gray-100 p-8 flex flex-col gap-10 sticky top-0 h-screen z-50">
-        <div>
-            <h1 class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</h1>
-            <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1 italic font-bold">Executive Admin</p>
-        </div>
-        <nav class="flex flex-col gap-6 text-left">
-            <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link pl-4 active uppercase text-left font-bold">Overview</button>
-            <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link pl-4 text-gray-400 hover:text-black uppercase text-left">Partners</button>
-            <button onclick="showSection('services')" id="nav-services" class="sidebar-link pl-4 text-gray-400 hover:text-black uppercase text-left">Servizi</button>
-            <button onclick="showSection('finance')" id="nav-finance" class="sidebar-link pl-4 text-gray-400 hover:text-black uppercase text-amber-700 text-left font-bold">Payouts & IBAN</button>
+        <h1 class="text-xl tracking-[0.3em] font-light uppercase serif text-black">ME-X Master</h1>
+        <nav class="flex flex-col gap-6">
+            <button onclick="showSection('overview')" id="nav-overview" class="sidebar-link pl-4 active uppercase text-left">Overview</button>
+            <button onclick="showSection('calendar')" id="nav-calendar" class="sidebar-link pl-4 text-gray-400 uppercase text-left">Master Calendar</button>
+            <button onclick="showSection('partners')" id="nav-partners" class="sidebar-link pl-4 text-gray-400 uppercase text-left">Partners & Providers</button>
         </nav>
     </aside>
 
     <main class="flex-1 p-12 overflow-y-auto">
-
+        
         <section id="overview" class="content-section">
-            <h2 class="text-4xl serif italic mb-10 text-slate-900">Stato Globale</h2>
+            <h2 class="text-4xl serif italic mb-10">Stato Globale</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-8 border border-gray-100 rounded-3xl">
+                    <p class="text-[9px] uppercase tracking-widest text-gray-400">Revenue</p>
+                    <h3 class="text-3xl serif italic">€ 14.500</h3>
+                </div>
+                </div>
+        </section>
+
+        <section id="calendar" class="content-section hidden">
+            <div class="flex justify-between items-end mb-10">
+                <h2 class="text-4xl serif italic">Master Calendar</h2>
+                <span class="text-[10px] uppercase font-bold text-amber-600">Sync Live: Operatori & B&B</span>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-                <div class="executive-card p-6 border-l-4 border-l-black shadow-sm">
-                    <p class="stat-label mb-2">Volume Lordo</p>
-                    <h3 class="text-2xl serif italic" id="fin-gross">€ 0</h3>
+            <div class="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm">
+                <div class="grid grid-cols-7 bg-gray-50 p-4 text-[10px] font-bold uppercase tracking-widest border-b">
+                    <div>Lun</div><div>Mar</div><div>Mer</div><div>Gio</div><div>Ven</div><div>Sab</div><div>Dom</div>
                 </div>
-                <div class="executive-card p-6 border-l-4 border-l-amber-600 shadow-sm">
-                    <p class="stat-label mb-2">Margine ME-X (Netto)</p>
-                    <h3 class="text-2xl serif italic" id="fin-mex">€ 0</h3>
-                </div>
-                <div class="executive-card p-6 border-l-4 border-l-blue-400 shadow-sm">
-                    <p class="stat-label mb-2">IVA 22% Maturata</p>
-                    <h3 class="text-2xl serif italic" id="fin-iva">€ 0</h3>
-                </div>
-                <div class="executive-card p-6 border-l-4 border-l-green-500 shadow-sm">
-                    <p class="stat-label mb-2">Debito Fornitori</p>
-                    <h3 class="text-2xl serif italic" id="fin-providers">€ 0</h3>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="executive-card p-10 rounded-xl">
-                    <h3 class="stat-label mb-8 italic">Ranking Performance Strutture</h3>
-                    <div id="ranking-list" class="space-y-6 text-sm italic text-gray-400">
-                        Caricamento dati in corso...
-                    </div>
-                </div>
-                <div class="executive-card p-10 rounded-xl">
-                    <h3 class="stat-label mb-8 italic">Quick Stats</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between border-b pb-2"><span class="text-[10px] uppercase tracking-widest text-gray-400">Partner Totali</span><span id="stat-partners" class="font-bold">0</span></div>
-                        <div class="flex justify-between border-b pb-2"><span class="text-[10px] uppercase tracking-widest text-gray-400">Prenotazioni Totali</span><span id="stat-bookings" class="font-bold">0</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="partners" class="content-section hidden">
-            <div class="flex justify-between items-end mb-10">
-                <h2 class="text-4xl serif italic">Anagrafica Strutture</h2>
-                <button onclick="toggleModal('partner-modal')" class="bg-black text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase hover:bg-gray-800 transition shadow-lg">Add Partner</button>
-            </div>
-            <div class="executive-card overflow-hidden rounded-xl shadow-sm">
-                <table class="w-full text-left text-[10px] tracking-widest uppercase">
-                    <thead class="bg-gray-50 border-b border-gray-100 text-gray-400 italic font-bold">
-                        <tr>
-                            <th class="p-6">Struttura</th>
-                            <th>Tipo</th>
-                            <th>Comm.</th>
-                            <th>IBAN Associato</th>
-                            <th class="p-6 text-right">Azione</th>
-                        </tr>
-                    </thead>
-                    <tbody id="partners-table-body" class="text-gray-600 divide-y divide-gray-50">
-                        </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="finance" class="content-section hidden">
-            <h2 class="text-4xl serif italic mb-10">Gestione Payouts & IBAN</h2>
-            <div class="executive-card p-10 rounded-xl shadow-sm">
-                <p class="stat-label mb-6 italic text-amber-700 font-bold uppercase tracking-[0.3em]">Liquidazioni Pendenti</p>
-                <div id="payouts-list" class="space-y-4 text-sm">
+                <div id="calendar-grid" class="grid grid-cols-7 italic">
                     </div>
             </div>
         </section>
 
-        <section id="services" class="content-section hidden">
-            <div class="flex justify-between items-end mb-10">
-                <h2 class="text-4xl serif italic">Catalogo Servizi</h2>
-                <button onclick="toggleModal('service-modal')" class="bg-black text-white px-8 py-4 text-[9px] font-bold tracking-widest uppercase">Crea Servizio</button>
-            </div>
-            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="executive-card p-8 rounded-xl border-l-4 border-black">
-                    <p class="stat-label">Esperienza Notturna</p>
-                    <h4 class="serif italic text-2xl mt-2">Notte del Mito</h4>
-                    <p class="text-[10px] mt-4 font-bold tracking-widest">UNIT PRICE: € 120.00</p>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <div id="partner-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
-        <div class="bg-white max-w-md w-full p-10 shadow-2xl rounded-2xl">
-            <h3 class="serif italic text-2xl mb-8">Registrazione Nuovo Partner</h3>
-            <div class="space-y-6">
-                <input type="text" id="p-name" placeholder="NOME STRUTTURA">
-                <select id="p-type">
-                    <option value="hotel">Hotel</option>
-                    <option value="bnb">B&B</option>
-                    <option value="villa">Villa/Resort</option>
-                </select>
-                <input type="number" id="p-comm" placeholder="COMMISSIONE %">
-                <input type="text" id="p-iban" placeholder="IBAN PER PAGAMENTI (IT...)" class="iban-font uppercase">
-                <button onclick="submitPartner()" class="w-full bg-black text-white py-4 text-[9px] font-bold uppercase tracking-widest mt-4">Salva Partner & Registra IBAN</button>
-                <button onclick="toggleModal('partner-modal')" class="w-full text-[9px] uppercase tracking-widest text-gray-400 mt-2">Chiudi Finestra</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Simulazione Database Locale per Visualizzazione
-        let localPartners = [
-            { id: 1, name: "B&B Duomo Messina", type: "B&B", comm: "15%", iban: "IT45X01234...", sales: 850 }
-        ];
-
         function showSection(id) {
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active', 'text-black'));
+            document.getElementById('nav-' + id).classList.add('active', 'text-black');
+            if(id === 'calendar') renderMasterCalendar();
+        }
 
-            const targetSection = document.getElementById(id);
-            if (targetSection) targetSection.classList.remove('hidden');
-
-            const links = document.querySelectorAll('.sidebar-link');
-            links.forEach(l => {
-                l.classList.remove('active', 'text-black');
-                l.classList.add('text-gray-400');
-            });
-
-            const activeLink = document.getElementById('nav-' + id);
-            if (activeLink) {
-                activeLink.classList.add('active', 'text-black');
-                activeLink.classList.remove('text-gray-400');
+        async function renderMasterCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+            // Simuliamo 31 giorni
+            for(let i = 1; i <= 31; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day hover:bg-gray-50 transition cursor-pointer';
+                day.innerHTML = `<strong>${i}</strong><div class="mt-2"><span class="booking-dot bg-black"></span><span class="booking-dot bg-amber-500"></span></div>`;
+                grid.appendChild(day);
             }
         }
-
-        async function updateRealStats() {
-            try {
-                const response = await fetch('/api/stats');
-                const data = await response.json();
-                
-                document.getElementById('fin-gross').innerText = `€ ${data.totalRevenue}`;
-                document.getElementById('stat-bookings').innerText = data.bookingCount;
-                document.getElementById('stat-partners').innerText = data.partnersCount || localPartners.length;
-                
-                const margin = (data.totalRevenue * 0.15).toFixed(2);
-                const iva = (data.totalRevenue * 0.22).toFixed(2);
-                const providers = (data.totalRevenue * 0.63).toFixed(2);
-
-                document.getElementById('fin-mex').innerText = `€ ${margin}`;
-                document.getElementById('fin-iva').innerText = `€ ${iva}`;
-                document.getElementById('fin-providers').innerText = `€ ${providers}`;
-                
-                renderDynamicElements();
-            } catch (error) {
-                console.warn("Dati reali non ricevuti, utilizzo mock data.");
-                renderDynamicElements();
-            }
-        }
-
-        function renderDynamicElements() {
-            // Render Ranking
-            const rankingList = document.getElementById('ranking-list');
-            rankingList.innerHTML = localPartners.map(p => `
-                <div class="flex justify-between items-center border-b pb-2 text-[10px] uppercase text-gray-400">
-                    <span>${p.name}</span>
-                    <span class="font-bold text-black">€ ${p.sales}</span>
-                </div>
-            `).join('');
-
-            // Render Table
-            const tableBody = document.getElementById('partners-table-body');
-            tableBody.innerHTML = localPartners.map(p => `
-                <tr>
-                    <td class="p-6 font-bold text-slate-900">${p.name}</td>
-                    <td>${p.type}</td>
-                    <td>${p.comm}</td>
-                    <td class="iban-font text-gray-400">${p.iban}</td>
-                    <td class="p-6 text-right font-bold underline cursor-pointer">Edit</td>
-                </tr>
-            `).join('');
-        }
-
-        function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
-        }
-
-        async function submitPartner() {
-            const name = document.getElementById('p-name').value;
-            const iban = document.getElementById('p-iban').value;
-            const comm = document.getElementById('p-comm').value;
-            const type = document.getElementById('p-type').value;
-            
-            if(!name || !iban) {
-                alert("Per favore, inserisci almeno Nome e IBAN");
-                return;
-            }
-
-            const newPartner = {
-                id: Date.now(),
-                name: name,
-                type: type.toUpperCase(),
-                comm: comm + "%",
-                iban: iban.substring(0, 10) + "...",
-                sales: 0
-            };
-
-            localPartners.push(newPartner);
-            renderDynamicElements();
-            
-            alert("Partner " + name + " registrato con successo nel sistema.");
-            toggleModal('partner-modal');
-        }
-
-        window.onload = updateRealStats;
     </script>
 </body>
 </html>
