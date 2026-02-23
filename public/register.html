@@ -9,9 +9,12 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
         .serif { font-family: 'Cormorant Garamond', serif; }
-        .input-field { border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0; width: 100%; outline: none; transition: border-color 0.3s; font-size: 0.9rem; }
+        .input-field { border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0; width: 100%; outline: none; transition: border-color 0.3s; font-size: 0.9rem; background: transparent; }
         .input-field:focus { border-color: #1a1a1a; }
         .label-style { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: #8c8c8c; font-weight: 600; margin-top: 1.5rem; display: block; }
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-success { animation: fadeIn 0.8s ease forwards; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6">
@@ -39,7 +42,7 @@
                 </div>
                 <div>
                     <label class="label-style">P.IVA / Cod. Fiscale</label>
-                    <input type="text" id="taxId" class="input-field" placeholder="0123456789">
+                    <input type="text" id="taxId" class="input-field" placeholder="0123456789" required>
                 </div>
             </div>
 
@@ -53,36 +56,76 @@
                 <input type="email" id="email" class="input-field" placeholder="mario@esempio.it" required>
             </div>
 
-            <div class="bg-gray-50 p-6 rounded-2xl mt-8">
-                <label class="label-style text-amber-700">Dati per Acccredito Provvigioni (IBAN)</label>
-                <input type="text" id="iban" class="input-field font-mono uppercase tracking-widest border-amber-200" placeholder="IT 00 X 00000 00000 000000000000" required>
+            <div class="bg-gray-50 p-6 rounded-2xl mt-8 border border-gray-100">
+                <label class="label-style text-amber-700">Dati per Accredito Provvigioni (IBAN)</label>
+                <input type="text" id="iban" class="input-field font-mono uppercase tracking-[0.1em] border-amber-200" placeholder="IT 00 X 00000 00000 000000000000" required minlength="27">
                 <p class="text-[8px] text-gray-400 mt-2 italic">Assicurati che l'IBAN sia corretto per evitare ritardi nei pagamenti.</p>
             </div>
 
             <div class="flex items-start gap-3 mt-8">
-                <input type="checkbox" id="contractAccept" class="mt-1" required>
-                <label class="text-[10px] text-gray-500 leading-relaxed uppercase tracking-tight">
-                    Accetto i termini del <span class="underline cursor-pointer">Contratto Digitale ME-X</span> e autorizzo il trattamento dei dati per la gestione delle prenotazioni e dei pagamenti.
+                <input type="checkbox" id="contractAccept" class="mt-1 w-4 h-4 accent-black" required>
+                <label for="contractAccept" class="text-[10px] text-gray-500 leading-relaxed uppercase tracking-tight cursor-pointer">
+                    Accetto i termini del <span class="underline font-bold">Contratto Digitale ME-X</span> e autorizzo il trattamento dei dati per la gestione delle prenotazioni e dei pagamenti.
                 </label>
             </div>
 
-            <button type="submit" class="w-full bg-black text-white py-5 mt-10 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-800 transition shadow-xl">
+            <button type="submit" id="submitBtn" class="w-full bg-black text-white py-5 mt-10 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-800 transition shadow-xl active:scale-[0.98]">
                 Invia Candidatura & Firma
             </button>
         </form>
         
-        <div id="successMessage" class="hidden text-center p-10">
-            <h2 class="serif italic text-2xl">Grazie per la richiesta.</h2>
-            <p class="text-[10px] uppercase tracking-widest text-gray-400 mt-4 leading-loose">Il nostro team verificherà i dati e ti invierà il link alla tua dashboard personale entro 24 ore.</p>
+        <div id="successMessage" class="hidden text-center p-10 animate-success">
+            <div class="mb-6 flex justify-center">
+                <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+            </div>
+            <h2 class="serif italic text-3xl mb-4">Grazie per la richiesta.</h2>
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 mt-4 leading-loose max-w-sm mx-auto">
+                Il nostro team verificherà i dati e ti invierà il link alla tua dashboard personale e il tuo QR Code entro 24 ore.
+            </p>
+            <a href="/" class="inline-block mt-8 text-[9px] uppercase tracking-widest border-b border-black pb-1">Torna alla Home</a>
         </div>
     </div>
 
     <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Logica per inviare i dati al tuo database/server
-            this.classList.add('hidden');
-            document.getElementById('successMessage').classList.remove('hidden');
+            
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = "ELABORAZIONE IN CORSO...";
+
+            // Raccolta dati dal form
+            const payload = {
+                legalName: document.getElementById('legalName').value,
+                entityType: document.getElementById('entityType').value,
+                taxId: document.getElementById('taxId').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                iban: document.getElementById('iban').value.toUpperCase().replace(/\s/g, ''),
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                // Invio al server (endpoint api/register-partner creato nel server.js)
+                const response = await fetch('/api/register-partner', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    this.classList.add('hidden');
+                    document.getElementById('successMessage').classList.remove('hidden');
+                } else {
+                    throw new Error("Errore durante l'invio");
+                }
+            } catch (err) {
+                alert("Si è verificato un errore. Riprova tra qualche minuto.");
+                btn.disabled = false;
+                btn.innerText = "INVIA CANDIDATURA & FIRMA";
+            }
         });
     </script>
 </body>
