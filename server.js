@@ -4,67 +4,45 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 
 app.use(express.json());
-
-// 1. SERVIZIO FILE STATICI
-// Questo comando dice al server di cercare immagini, CSS e JS nella cartella public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 2. LOGICA DATABASE TEMPORANEO (In attesa di Database reale)
-// Serve per far funzionare i contatori della tua Dashboard Admin
-let mockStats = {
-    totalRevenue: 1250,
-    bookingCount: 12,
-    partnersCount: 1
-};
+// DATABASE MOCK (In futuro questo sarà il tuo Database reale)
+let globalBookings = [
+    { id: 1, date: '2026-02-25', time: '20:30', service: 'Notte del Mito', provider: 'Feluca_01', customer: 'Mario Rossi' }
+];
 
-// 3. API: STATISTICHE DASHBOARD ADMIN
-// Necessario per alimentare i grafici e i numeri della tua dashboard
-app.get('/api/stats', (req, res) => {
-    res.json(mockStats);
+// 1. API: RECUPERO CALENDARIO MASTER (Per Admin, Partner e Provider)
+app.get('/api/calendar/events', (req, res) => {
+    // L'Admin vede tutto, il Provider vedrebbe solo i suoi (logica da espandere)
+    res.json(globalBookings);
 });
 
-// 4. API: REGISTRAZIONE PARTNER & IBAN
-// Riceve i dati dal form di registrazione e li processa
-app.post('/api/register-partner', (req, res) => {
-    const partnerData = req.body;
-    console.log("Registrazione Ricevuta:", partnerData);
-    
-    // Incrementiamo il counter dei partner per la dashboard
-    mockStats.partnersCount++;
-    
-    res.json({ 
-        success: true, 
-        message: "Contratto digitalizzato ricevuto. Verifica in corso." 
-    });
-});
-
-// 5. API: STRIPE CHECKOUT
-// Gestisce il pagamento e associa il Partner ID (referral) alla transazione
-app.post('/api/create-checkout-session', async (req, res) => {
+// 2. API: CREAZIONE CHECKOUT MULTIPLO (CARRELLO)
+app.post('/api/create-luxury-checkout', async (req, res) => {
     try {
-        const { partnerId, date, time } = req.body;
+        const { cart, customerEmail, partnerId } = req.body;
         
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [{
+            customer_email: customerEmail,
+            payment_method_types: ['card', 'paypal'],
+            line_items: cart.map(item => ({
                 price_data: {
                     currency: 'eur',
                     product_data: { 
-                        name: 'Notte del Mito - ME-Xperience',
-                        description: `Tour dello Stretto - Data: ${date} Ore: ${time}` 
+                        name: item.name,
+                        description: `Data: ${item.date} - Ore: ${item.time}`
                     },
-                    unit_amount: 12000, // Prezzo in centesimi (€120.00)
+                    unit_amount: item.price * 100,
                 },
                 quantity: 1,
-            }],
+            })),
             metadata: { 
                 partner_id: partnerId || 'DIRECT',
-                booking_date: date,
-                booking_time: time
+                cart_details: JSON.stringify(cart.map(i => i.id))
             },
             mode: 'payment',
-            success_url: `https://${req.headers.host}/index.html?status=success`,
-            cancel_url: `https://${req.headers.host}/index.html?status=cancel`,
+            success_url: `https://${req.headers.host}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `https://${req.headers.host}/cart.html`,
         });
         
         res.json({ id: session.id });
@@ -73,18 +51,20 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 });
 
-// 6. GESTIONE ROTTE FISICHE (REWRITES LATO SERVER)
-// Assicura che ogni pagina HTML venga servita correttamente se richiamata direttamente
+// 3. API: REGISTRAZIONE UTENTE/CLIENTE (SICUREZZA)
+app.post('/api/auth/register-customer', (req, res) => {
+    const { email, name } = req.body;
+    console.log(`Nuovo Cliente Registrato: ${email}`);
+    res.json({ success: true, message: "Account ME-X creato." });
+});
+
+// 4. ROTTE FISICHE PER VERCEL
 app.get('/master-admin-dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/admin.html')));
 app.get('/partner-panel', (req, res) => res.sendFile(path.join(__dirname, 'public/partner.html')));
 app.get('/provider-panel', (req, res) => res.sendFile(path.join(__dirname, 'public/provider.html')));
-app.get('/partner-registration', (req, res) => res.sendFile(path.join(__dirname, 'public/register.html')));
 
-// 7. ESPORTAZIONE PER VERCEL
 module.exports = app;
 
-// Avvio locale per test
 if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Engine ME-X attivo su porta ${PORT}`));
+    app.listen(3000, () => console.log('ME-X Luxury Engine Running...'));
 }
