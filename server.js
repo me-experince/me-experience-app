@@ -92,3 +92,7 @@ app.get('/api/availability/:experienceId', (req, res) => {
 app.get('/services', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/services.html'));
 });
+// Questa riga dice al server di mostrare la pagina dei servizi
+app.get('/services', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/services.html'));
+});
