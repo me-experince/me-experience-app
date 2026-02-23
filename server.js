@@ -4,13 +4,19 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATABASE INTEGRATO IN MEMORIA ---
+// --- LOGICA DI ROUTING AUTOMATICA ---
+// Questa riga permette di accedere a /services, /partner, /admin senza scrivere .html
+app.use(express.static(path.join(__dirname, 'public'), { 
+    extensions: ['html'],
+    index: 'index.html' 
+}));
+
+// --- DATABASE INTEGRATO ---
 let data = {
     partners: [
         { id: 'P_DUOMO', name: 'B&B Duomo Messina', type: 'bnb', commission: 15, sales: 2450 },
-        { id: 'P_VILLA', name: "Villa Sant'Andrea", type: 'hotel', commission: 20, sales: 3100 }
+        { id: 'VILLA_SA', name: "Villa Sant'Andrea", type: 'hotel', commission: 20, sales: 3100 }
     ],
     services: [
         { id: 'S_MITO', name: 'Notte del Mito', type: 'exp', price: 120, status: 'attivo' },
@@ -21,10 +27,9 @@ let data = {
     ]
 };
 
-// --- API: RECUPERO DATI ---
+// --- API CORE ---
 app.get('/api/admin/data', (req, res) => res.json(data));
 
-// --- API: AGGIUNGI PARTNER ---
 app.post('/api/partners/add', (req, res) => {
     const { name, type, commission } = req.body;
     const newPartner = { id: 'P' + Date.now(), name, type, commission: parseInt(commission), sales: 0 };
@@ -32,7 +37,6 @@ app.post('/api/partners/add', (req, res) => {
     res.json({ success: true, partner: newPartner });
 });
 
-// --- API: AGGIUNGI SERVIZIO ---
 app.post('/api/services/add', (req, res) => {
     const { name, type, price } = req.body;
     const newService = { id: 'S' + Date.now(), name, type, price: parseInt(price), status: 'attivo' };
@@ -40,17 +44,16 @@ app.post('/api/services/add', (req, res) => {
     res.json({ success: true, service: newService });
 });
 
-// --- API: PRENOTAZIONE MANUALE ---
 app.post('/api/bookings/add', (req, res) => {
     const { partnerId, date, time, guestName } = req.body;
     const newBooking = { id: 'B' + Date.now(), partnerId, date, time, guestName, status: 'confermato' };
     data.bookings.push(newBooking);
     const partner = data.partners.find(p => p.id === partnerId);
-    if(partner) partner.sales += 120; // Prezzo simulato
-    res.json({ success: true, booking: newBooking });
+    if(partner) partner.sales += 120;
+    res.json({ success: true });
 });
 
-// --- STRIPE CHECKOUT ---
+// --- STRIPE ---
 app.post('/create-checkout-session', async (req, res) => {
     try {
         const { partnerId, date, time } = req.body;
@@ -62,15 +65,17 @@ app.post('/create-checkout-session', async (req, res) => {
             }],
             metadata: { partnerId, date, time },
             mode: 'payment',
-            success_url: `${req.headers.origin}/success.html`,
-            cancel_url: `${req.headers.origin}/cancel.html`,
+            success_url: `${req.headers.origin}/success`,
+            cancel_url: `${req.headers.origin}/cancel`,
         });
         res.json({ id: session.id });
     } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// --- ROUTING ---
-app.get('/master-admin-dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/admin.html')));
+// --- FALLBACK PER SINGLE PAGE APPLICATION ---
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`ME-X Engine 2.5 Operational`));
+app.listen(PORT, () => console.log(`ME-X Engine 2.5: All routes operational.`));
