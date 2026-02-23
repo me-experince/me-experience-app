@@ -1,26 +1,30 @@
-<body class="bg-[#fafafa] flex items-center justify-center min-h-screen font-sans">
-    <div class="max-w-xl w-full bg-white border border-gray-100 p-12 shadow-sm text-center">
-        <p class="text-[10px] tracking-[0.4em] text-gray-400 uppercase mb-4 font-bold">Partner Dashboard</p>
-        <h1 class="text-4xl serif italic mb-10">B&B Duomo Messina</h1>
-        
-        <div class="border-y border-gray-50 py-10 mb-10">
-            <p class="text-[10px] tracking-widest text-gray-400 uppercase mb-2 italic">Provvigioni Maturate</p>
-            <h2 class="text-5xl serif italic text-black">€ 145,50</h2>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-X Partner | Reserved Area</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .sidebar-link { transition: all 0.3s; letter-spacing: 0.15em; font-size: 0.65rem; font-weight: 600; }
+        .sidebar-link.active { color: #1a1a1a; border-left: 2px solid #1a1a1a; }
+        .executive-card { background: #fff; border: 1px solid #f2f2f2; transition: all 0.4s ease; }
+        .executive-card:hover { border-color: #1a1a1a; }
+        .stat-label { letter-spacing: 0.3em; font-size: 0.6rem; color: #8c8c8c; font-weight: 400; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <aside class="w-64 bg-white border-r border-gray-100 p-8 flex flex-col gap-12 sticky top-0 h-screen">
+        <div>
+            <h1 class="text-xl tracking-[0.3em] font-light uppercase serif">ME-X</h1>
+            <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mt-1 italic">Partner Portal</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-10 text-[10px] tracking-widest uppercase">
-            <div class="p-4 border border-gray-50">
-                <p class="text-gray-400 mb-1">Scansioni QR</p>
-                <p class="font-bold">42</p>
-            </div>
-            <div class="p-4 border border-gray-50">
-                <p class="text-gray-400 mb-1">Vendite</p>
-                <p class="font-bold">12</p>
-            </div>
-        </div>
-
-        <button class="w-full py-5 border border-black text-[10px] tracking-widest uppercase font-bold hover:bg-black hover:text-white transition">
-            Richiedi Accredito
-        </button>
-    </div>
-</body>
+        <nav class="flex flex-col gap-8">
+            <button onclick="showSection('earnings')" id="nav-earnings" class="sidebar-link text-left pl-4 active uppercase text-black">Guadagni</button>
+            <button onclick="showSection('bookings')" id="nav-bookings" class="sidebar-link text-left pl-4 text-gray-400 hover:text-black uppercase">Prenotazioni</button>
+            <button onclick="showSection('marketing')" id="nav-marketing" class="sidebar-link text-left pl
