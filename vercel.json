@@ -7,10 +7,10 @@
     }
   ],
   "rewrites": [
-    { "source": "/master-admin-dashboard", "destination": "/public/admin.html" },
-    { "source": "/partner-panel", "destination": "/public/partner.html" },
-    { "source": "/provider-panel", "destination": "/public/provider.html" },
-    { "source": "/partner-registration", "destination": "/public/register.html" },
+    { "source": "/master-admin-dashboard", "destination": "/admin.html" },
+    { "source": "/partner-panel", "destination": "/partner.html" },
+    { "source": "/provider-panel", "destination": "/provider.html" },
+    { "source": "/partner-registration", "destination": "/register.html" },
     { "source": "/(.*)", "destination": "/server.js" }
   ]
 }
