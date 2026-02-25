@@ -76,3 +76,19 @@
     </script>
 </body>
 </html>
+// Inserisci questo script in fondo a index.html
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const partnerId = urlParams.get('ref');
+    
+    if (partnerId) {
+        // Memorizza l'ID del partner per il checkout
+        localStorage.setItem('mex_partner_id', partnerId);
+        
+        // Estetica Co-Brand: Mostra un messaggio di benvenuto
+        const welcomeMsg = document.createElement('div');
+        welcomeMsg.className = "fixed top-24 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-6 py-2 rounded-full shadow-lg z-50 text-[10px] uppercase font-bold tracking-widest border border-amber-200 animate-bounce";
+        welcomeMsg.innerHTML = `Welcome guest of <span class="text-amber-600">${partnerId.replace(/_/g, ' ')}</span>`;
+        document.body.appendChild(welcomeMsg);
+    }
+};
